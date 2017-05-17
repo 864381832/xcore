@@ -152,6 +152,13 @@
 			<version>1.2.3</version>
 		</dependency>
 
+		<!-- dom4j 解析 XML文件的包 -->
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
 		<!-- JSTL标签库 -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
