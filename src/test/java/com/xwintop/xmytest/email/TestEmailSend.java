@@ -20,17 +20,18 @@ public class TestEmailSend {
 	@Test
 	public void sendTest() {
 		MailSenderInfo mailInfo = new MailSenderInfo();
-		mailInfo.setMailServerHost("smtp.yeah.net");
+		mailInfo.setMailServerHost("smtp.163.com");
 		mailInfo.setMailServerPort("25");
 		mailInfo.setValidate(true);
-		mailInfo.setUserName("yms_reg");
-		mailInfo.setPassword("heliushi_yeah");// 您的邮箱密码
-		mailInfo.setFromAddress("yms_reg@yeah.net");
+		mailInfo.setUserName("xwintop@163.com");
+		mailInfo.setPassword("xufeng108622");// 您的邮箱密码
+		mailInfo.setFromAddress("xwintop@163.com");
 		mailInfo.setToAddress(emailUrl);
 		mailInfo.setSubject("易莫森密码找回");
 		mailInfo.setContent("您的密码已重置，新密码为：" + "123456");
 		SimpleMailSender sms = new SimpleMailSender();
-		sms.sendTextMail(mailInfo);
+		boolean istrue = sms.sendTextMail(mailInfo);
+		System.out.println(istrue);
 	}
 
 	/**
