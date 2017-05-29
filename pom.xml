@@ -219,6 +219,20 @@
 			<version>5.14.5</version>
 		</dependency>
 
+		<!-- 序列号工具包 -->
+		<dependency>
+			<groupId>com.esotericsoftware</groupId>
+			<artifactId>kryo</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+
+		<!-- solr api -->
+		<dependency>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-solrj</artifactId>
+			<version>6.5.1</version>
+		</dependency>
+
 		<!-- 测试使用包 开始 -->
 		<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
 		<dependency>
