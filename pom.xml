@@ -106,6 +106,12 @@
 			<artifactId>tomcat-jdbc</artifactId>
 			<version>8.5.9</version>
 		</dependency>
+		<!-- alibaba的JDBC连接池 -->
+		<dependency>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>druid</artifactId>
+		    <version>1.0.13</version>
+		</dependency>
 
 		<!-- Mybatis和Spring的 整合包，是mybatis出的 -->
 		<dependency>

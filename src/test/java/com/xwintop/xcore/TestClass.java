@@ -2,6 +2,11 @@ package com.xwintop.xcore;
 
 import java.nio.Buffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
@@ -38,6 +43,9 @@ public class TestClass {
 	
 	@Test
 	public void testClass(){
+		Map<String, String> map = new HashMap<>();
+		Set<String> set = new HashSet<>();
+		ArrayList<String> arrayList;
 		Future<String> future = new FutureTask<String>(new Runnable() {
 			@Override
 			public void run() {
