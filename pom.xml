@@ -225,7 +225,7 @@
 			<version>5.14.5</version>
 		</dependency>
 
-		<!-- 序列号工具包 -->
+		<!-- 序列化工具包 -->
 		<dependency>
 			<groupId>com.esotericsoftware</groupId>
 			<artifactId>kryo</artifactId>
