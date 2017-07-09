@@ -3,7 +3,6 @@ package com.xwintop.xcore;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,7 +13,6 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.xwintop.xcore.base.Bill;
-import com.xwintop.xcore.base.BillEntry;
 import com.xwintop.xcore.util.SerializationObject;
 
 /** 
