@@ -23,7 +23,7 @@ public class JavaFxMain extends Application {
 
 		try {
 			// Read file fxml and draw interface.
-			Parent root = FXMLLoader.load(getClass().getResource("/com/xwintop/javaFX/MyScene.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/javafx/MyScene.fxml"));
 			primaryStage.setTitle("My Application");
 			primaryStage.setScene(new Scene(root));
 			primaryStage.show();
