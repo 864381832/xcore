@@ -145,11 +145,11 @@
 			<version>2.8.0</version>
 		</dependency>
 		<!-- jodd 开发工具包 -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.jodd</groupId>
 			<artifactId>jodd-all</artifactId>
 			<version>3.8.1</version>
-		</dependency>
+		</dependency> -->
 
 		<!-- logback日志记录 -->
 		<dependency>

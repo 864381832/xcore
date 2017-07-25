@@ -16,6 +16,10 @@ public class MyLogger {
 		this.LOGGER = LoggerFactory.getLogger(c);
 	}
 
+	public void error(Exception message) {
+		this.LOGGER.error(message.getMessage());
+	}
+	
 	public void error(String message) {
 		this.LOGGER.error(message);
 	}
