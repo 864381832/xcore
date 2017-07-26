@@ -2,12 +2,14 @@ package com.xwintop.xcore.util.javafx;
 
 import java.io.File;
 
+import org.apache.commons.io.FileUtils;
 import org.controlsfx.control.PopOver;
 
 import com.xwintop.xcore.util.MyLogger;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -88,7 +90,7 @@ public class FileChooserUtil {
 
 	/**
 	 * @Title: setOnDrag
-	 * @Description: 添加文件拖拽
+	 * @Description: 添加文件拖拽获取路径
 	 */
 	public static void setOnDrag(TextField textField, FileType fileType) {
 		textField.setOnDragOver(new EventHandler<DragEvent>() {
@@ -115,6 +117,40 @@ public class FileChooserUtil {
 								if (file.isDirectory()) {
 									textField.setText(file.getAbsolutePath());
 								}
+							}
+						}
+					} catch (Exception e) {
+						myLogger.error(e);
+					}
+				}
+			}
+		});
+	}
+
+	/**
+	 * @Title: setOnDrag
+	 * @Description: 添加文件拖拽获取文件内容
+	 */
+	public static void setOnDragByOpenFile(TextInputControl textField) {
+		textField.setOnDragOver(new EventHandler<DragEvent>() {
+			@Override
+			public void handle(DragEvent event) {
+				if (event.getGestureSource() != textField) {
+					event.acceptTransferModes(TransferMode.ANY);
+				}
+			}
+		});
+		textField.setOnDragDropped(new EventHandler<DragEvent>() {
+			@Override
+			public void handle(DragEvent event) {
+				Dragboard dragboard = event.getDragboard();
+				if (dragboard.hasFiles()) {
+					try {
+						File file = dragboard.getFiles().get(0);
+						if (file != null) {
+							if (file.isFile()) {
+								textField.setAccessibleText(file.getAbsolutePath());
+								textField.setText(FileUtils.readFileToString(file));
 							}
 						}
 					} catch (Exception e) {
