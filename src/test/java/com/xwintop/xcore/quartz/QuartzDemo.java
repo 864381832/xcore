@@ -19,6 +19,7 @@ import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.GroupMatcher;
+import org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean;
 
 /**
  * 任务调度
@@ -39,15 +40,14 @@ public class QuartzDemo {
 		Date runTime = DateBuilder.evenSecondDateAfterNow();
 
 		System.out.println("------- 将Job加入Scheduler中  ------");
-
 		// 用于描叙Job实现类及其他的一些静态信息，构建一个作业实例
 		JobDetail jobDetail = JobBuilder.newJob(TestJob.class).withIdentity("testJob_1", "group_1").build();
-
+//		jobDetail.isConcurrentExectionDisallowed();
 		//简单规则
-//		SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(2)// 时间间隔
-//				.withRepeatCount(5);// 重复次数（将执行6次）
+		SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(1)// 时间间隔
+				.withRepeatCount(5);// 重复次数（将执行6次）
 		// 表达式调度构建器
-		CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule("0/2 * * * * ?");
+//		CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule("0/1 * * * * ?");
 		
 		// 描叙触发Job执行的时间触发规则,Trigger实例化一个触发器
 		Trigger trigger = TriggerBuilder.newTrigger()// 创建一个新的TriggerBuilder来规范一个触发器
@@ -64,7 +64,6 @@ public class QuartzDemo {
 		System.out.println(jobDetail.getKey() + " 运行在: " + runTime);
 		
 		sched.start();
-		System.out.println("");
 	}
 	
 	public void triggerJob() throws SchedulerException{

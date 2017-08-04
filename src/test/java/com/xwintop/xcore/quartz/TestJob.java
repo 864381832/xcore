@@ -8,8 +8,9 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.JobKey;
+import org.quartz.StatefulJob;
 
-public class TestJob implements Job {
+public class TestJob implements StatefulJob {
 	// 开发者实现该接口定义需要执行的任务。JobExecutionContext类提供调度上下文的各种信息
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		// 通过上下文获取
@@ -18,6 +19,12 @@ public class TestJob implements Job {
 		DateFormat df = new SimpleDateFormat("yyyy年MM月dd日  HH时mm分ss秒");
 		System.out.println(jobKey + "在" + df.format(new Date()) + "时，输出了：Hello World!!!");
 
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println("传递过来的值"+context.getMergedJobDataMap());
 		// do more这里可以执行其他需要执行的任务
 	}
