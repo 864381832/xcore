@@ -10,6 +10,8 @@ public class StudentList {
 
 	List<Student> students; // 所有学生信息的集合
 
+	Data data;
+	
 	@XmlElement(name = "student")
 	public List<Student> getStudents() {
 		return students;
@@ -19,4 +21,13 @@ public class StudentList {
 		this.students = students;
 	}
 
+	@XmlElement(name = "data")
+	public Data getData() {
+		return data;
+	}
+
+	public void setData(Data data) {
+		this.data = data;
+	}
+	
 }

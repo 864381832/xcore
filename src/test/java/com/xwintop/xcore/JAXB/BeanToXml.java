@@ -47,13 +47,18 @@ public class BeanToXml {
 
 		Student st = new Student("张三", "男", 10001, "尖子班", hobby);
 		studentList.add(st);
-		Student st1 = new Student("李四", "男", 10002, "普通班", hobby);
-		studentList.add(st1);
-		Student st2 = new Student("莉莉", "女", 10003, "普通班", hobby);
-		studentList.add(st2);
+//		Student st1 = new Student("李四", "男", 10002, "普通班", hobby);
+//		studentList.add(st1);
+//		Student st2 = new Student("莉莉", "女", 10003, "普通班", hobby);
+//		studentList.add(st2);
 
 		StudentList students = new StudentList();
 		students.setStudents(studentList);
+		
+		Data data = new Data();
+		byte[] aBytes = "a".getBytes();
+		data.setValue(aBytes);
+		students.setData(data);
 		String str = BeanToXml.beanToXml(students, StudentList.class);
 
 		// 写入到xml文件中
