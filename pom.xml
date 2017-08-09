@@ -271,6 +271,13 @@
 			<version>1.10</version>
 		</dependency>
 
+		<!-- commons-betwixt xml转换工具包 -->
+		<dependency>
+			<groupId>commons-betwixt</groupId>
+			<artifactId>commons-betwixt</artifactId>
+			<version>0.8</version>
+		</dependency>
+
 		<!-- 测试使用包 开始 -->
 		<dependency>
 			<groupId>org.easymock</groupId>
