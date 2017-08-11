@@ -30,7 +30,7 @@ public class FileSystemWatchServiceTest {
 					StandardWatchEventKinds.ENTRY_MODIFY);
 			WatchKey watckKey = watcher.take();
 			List<WatchEvent<?>> events = watckKey.pollEvents();
-			for (WatchEvent event : events) {
+			for (@SuppressWarnings("rawtypes") WatchEvent event : events) {
 				if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE) {
 					System.out.println("Created: " + event.context().toString());
 				}
@@ -79,6 +79,7 @@ public class FileSystemWatchServiceTest {
 
 					}
 					// get the filename for the event
+					@SuppressWarnings("unchecked")
 					final WatchEvent<Path> watchEventPath = (WatchEvent<Path>) watchEvent;
 					final Path filename = watchEventPath.context();
 					// print it out

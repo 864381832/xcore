@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.shiro.codec.Base64;
+import org.apache.commons.codec.binary.Base64;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -83,7 +83,8 @@ public class KryoTest2 {
         return (T) kryo.readClassAndObject(input);
     }
  
-    private <T extends Serializable> String serializationList(List<T> obj,
+    @SuppressWarnings("unused")
+	private <T extends Serializable> String serializationList(List<T> obj,
             Class<T> clazz) {
         Kryo kryo = new Kryo();
         kryo.setReferences(false);
@@ -113,7 +114,7 @@ public class KryoTest2 {
         return new String(new Base64().encode(b));
     }
  
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "unused" })
     private <T extends Serializable> List<T> deserializationList(String obj,
             Class<T> clazz) {
         Kryo kryo = new Kryo();
@@ -133,7 +134,8 @@ public class KryoTest2 {
         return (List<T>) kryo.readObject(input, ArrayList.class, serializer);
     }
  
-    private <T extends Serializable> String serializationMap(
+    @SuppressWarnings("unused")
+	private <T extends Serializable> String serializationMap(
             Map<String, T> obj, Class<T> clazz) {
         Kryo kryo = new Kryo();
         kryo.setReferences(false);
@@ -165,7 +167,7 @@ public class KryoTest2 {
         return new String(new Base64().encode(b));
     }
  
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "unused" })
     private <T extends Serializable> Map<String, T> deserializationMap(
             String obj, Class<T> clazz) {
         Kryo kryo = new Kryo();

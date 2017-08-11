@@ -110,6 +110,7 @@ public class QuartzDemo {
 	public void getJobKeys() throws SchedulerException {
 		Scheduler scheduler = new StdSchedulerFactory().getScheduler();
 		for (String groupName : scheduler.getJobGroupNames()) {
+			System.out.println("groupName:"+groupName);
 			for (JobKey jobKey : scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupName))) {
 				String jobName = jobKey.getName();
 				String jobGroup = jobKey.getGroup();
@@ -149,8 +150,8 @@ public class QuartzDemo {
 		// trigger = ((TriggerBuilder<Trigger>)
 		// trigger.getTriggerBuilder()).withIdentity(triggerKey)
 		// .withSchedule(scheduleBuilder).build();
-		scheduler.deleteJob(trigger.getJobKey());
-		scheduler.scheduleJob(jobDetail, trigger);
+//		scheduler.deleteJob(trigger.getJobKey());
+//		scheduler.scheduleJob(jobDetail, trigger);
 	}
 
 	/**
@@ -167,7 +168,7 @@ public class QuartzDemo {
 			@Override
 			public void run() {
 				try {
-					demo.rescheduleJob();
+					demo.updateData();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
