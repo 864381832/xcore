@@ -2,20 +2,21 @@ package com.xwintop.xcore.util.javafx;
 
 import java.io.File;
 
+import javax.swing.filechooser.FileSystemView;
+
 import org.apache.commons.io.FileUtils;
-import org.controlsfx.control.PopOver;
 
 import com.xwintop.xcore.util.MyLogger;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
-import javafx.scene.control.Tooltip;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 /**
  * 
@@ -59,10 +60,30 @@ public class FileChooserUtil {
 		File file = null;
 		try {
 			FileChooser fileChooser = new FileChooser();
+			fileChooser.setInitialDirectory(FileSystemView.getFileSystemView().getHomeDirectory());
 			fileChooser.setInitialFileName(filename);
 			// fileChooser.getExtensionFilters().addAll(new
 			// FileChooser.ExtensionFilter("文本文件 (*.*.txt)", "*.txt"),
 			// new FileChooser.ExtensionFilter("二进制的对象文件 (*.*.dat)", "*.dat"));
+			file = fileChooser.showSaveDialog(null);
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			myLogger.error(e);
+		}
+		return file;
+	}
+	
+	/**
+	 * @Title: chooseSaveFile
+	 * @Description: 选择保存文件
+	 */
+	public static File chooseSaveFile(String filename,ExtensionFilter... extensionFilter) {
+		File file = null;
+		try {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setInitialDirectory(FileSystemView.getFileSystemView().getHomeDirectory());
+			fileChooser.setInitialFileName(filename);
+			fileChooser.getExtensionFilters().addAll(extensionFilter);
 			file = fileChooser.showSaveDialog(null);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
