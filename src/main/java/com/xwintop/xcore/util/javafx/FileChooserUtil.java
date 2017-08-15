@@ -51,6 +51,24 @@ public class FileChooserUtil {
 		}
 		return file;
 	}
+	
+	/**
+	 * @Title: chooseSaveFile
+	 * @Description: 选择保存文件
+	 */
+	public static File chooseFile(ExtensionFilter... extensionFilter) {
+		File file = null;
+		try {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setInitialDirectory(FileSystemView.getFileSystemView().getHomeDirectory());
+			fileChooser.getExtensionFilters().addAll(extensionFilter);
+			file = fileChooser.showOpenDialog(null);
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			myLogger.error(e);
+		}
+		return file;
+	}
 
 	/**
 	 * @Title: chooseSaveFile
