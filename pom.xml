@@ -260,7 +260,12 @@
 			<artifactId>controlsfx</artifactId>
 			<version>8.40.12</version>
 		</dependency>
-
+		<!-- jfoenix javaFx界面工具类 -->
+		<dependency>
+			<groupId>com.jfoenix</groupId>
+			<artifactId>jfoenix</artifactId>
+			<version>1.4.0</version>
+		</dependency>
 		<!-- commons-codec开发工具包 -->
 		<dependency>
 			<groupId>commons-codec</groupId>
@@ -287,13 +292,21 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.5</version>
 		</dependency>
+		<!-- commons-lang3 lang3工具的封装. -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.6</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.3</version>
+		</dependency>
 
 		<!-- 测试使用包 开始 -->
-		<!-- <dependency>
-			<groupId>org.easymock</groupId>
-			<artifactId>easymock</artifactId>
-			<version>3.4</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.easymock</groupId> <artifactId>easymock</artifactId> 
+			<version>3.4</version> </dependency> -->
 		<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
