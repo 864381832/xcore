@@ -314,6 +314,14 @@
 		<!-- <dependency> <groupId>org.easymock</groupId> <artifactId>easymock</artifactId> 
 			<version>3.4</version> </dependency> -->
 		<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+		
+		<!-- Caffeine 是基于Java 8的高性能，接近最佳的缓存库 -->
+		<dependency>
+			<groupId>com.github.ben-manes.caffeine</groupId>
+			<artifactId>caffeine</artifactId>
+			<version>2.5.5</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
