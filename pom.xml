@@ -314,7 +314,7 @@
 		<!-- <dependency> <groupId>org.easymock</groupId> <artifactId>easymock</artifactId> 
 			<version>3.4</version> </dependency> -->
 		<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
-		
+
 		<!-- Caffeine 是基于Java 8的高性能，接近最佳的缓存库 -->
 		<dependency>
 			<groupId>com.github.ben-manes.caffeine</groupId>
@@ -327,6 +327,15 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.22</version>
 		</dependency>
+
+		<!-- lombok消除冗长的 java代码 -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.18</version>
+			<scope>provided</scope>
+		</dependency>
+
 
 		<!-- 发送邮件包 -->
 		<dependency>
