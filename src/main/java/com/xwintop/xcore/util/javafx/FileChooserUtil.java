@@ -1,6 +1,7 @@
 package com.xwintop.xcore.util.javafx;
 
 import java.io.File;
+import java.nio.charset.Charset;
 
 import javax.swing.filechooser.FileSystemView;
 
@@ -189,7 +190,7 @@ public class FileChooserUtil {
 						if (file != null) {
 							if (file.isFile()) {
 								textField.setAccessibleText(file.getAbsolutePath());
-								textField.setText(FileUtils.readFileToString(file));
+								textField.setText(FileUtils.readFileToString(file,Charset.defaultCharset()));
 							}
 						}
 					} catch (Exception e) {
