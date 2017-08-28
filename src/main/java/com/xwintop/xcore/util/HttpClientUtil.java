@@ -3,18 +3,25 @@ package com.xwintop.xcore.util;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.BiConsumer;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
@@ -33,6 +40,29 @@ public class HttpClientUtil {
 			// AppleWebKit/537.36 (KHTML, like Gecko) Chrome/"+(iii++)+"
 			// Safari/537.36 Core/1.47.163."+(iii++)+" QQBrowser/9.3.7175.400";
 			// httpGet.setHeader("User-Agent", User_Agent);
+			HttpResponse httpResponse = closeableHttpClient.execute(httpGet);
+			HttpEntity httpEntity = httpResponse.getEntity();
+			if (httpEntity != null) {
+				content = EntityUtils.toString(httpEntity);
+			}
+			httpGet.abort();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return content;
+	}
+
+	public static String getHttpData(String url, Map<String, String> headerMap,
+			CloseableHttpClient closeableHttpClient) {
+		String content = null;
+		try {
+			HttpGet httpGet = new HttpGet(url);
+			headerMap.forEach(new BiConsumer<String, String>() {
+				@Override
+				public void accept(String key, String value) {
+					httpGet.addHeader(key, value);
+				}
+			});
 			HttpResponse httpResponse = closeableHttpClient.execute(httpGet);
 			HttpEntity httpEntity = httpResponse.getEntity();
 			if (httpEntity != null) {
@@ -88,7 +118,48 @@ public class HttpClientUtil {
 		}
 		return body;
 	}
-	
+
+	public static String getHttpDataByPost(String url, Map<String, String> headerMap, Map<String, String> entityMap) {
+		String body = "";
+		try {
+			// 创建httpclient对象
+			// CloseableHttpClient HttpClient = HttpClients.createDefault();
+			// 创建post方式请求对象
+			HttpPost httpPost = new HttpPost(url);
+			// 装填参数
+			List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+			if (entityMap != null) {
+				for (Entry<String, String> entry : entityMap.entrySet()) {
+					nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+				}
+			}
+			// 设置参数到请求对象中
+			httpPost.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
+			// 设置header信息
+			// 指定报文头【Content-type】、【User-Agent】
+			headerMap.forEach(new BiConsumer<String, String>() {
+				@Override
+				public void accept(String key, String value) {
+					httpPost.addHeader(key, value);
+				}
+			});
+			// 执行请求操作，并拿到结果（同步阻塞）
+			CloseableHttpResponse response = HttpClient.execute(httpPost);
+			// 获取结果实体
+			HttpEntity entity = response.getEntity();
+			if (entity != null) {
+				// 按指定编码转换结果实体为String类型
+				body = EntityUtils.toString(entity, "UTF-8");
+			}
+			EntityUtils.consume(entity);
+			// 释放链接
+			response.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return body;
+	}
+
 	public static String getHttpData(String url) {
 		return getHttpData(url, null);
 	}
@@ -96,11 +167,18 @@ public class HttpClientUtil {
 	public static String getHttpData(String url, String refererUrl) {
 		String content = null;
 		try {
+			CookieStore cookieStore = new BasicCookieStore();
+			// CloseableHttpClient HttpClient =
+			// HttpClients.custom().setDefaultCookieStore(cookieStore).build();
 			// 创建 httpUriRequest 实例
 			HttpGet httpGet = new HttpGet(url);
 			httpGet.addHeader("Referer", refererUrl);
 			// 执行 get 请求
 			HttpResponse httpResponse = HttpClient.execute(httpGet);
+			List<Cookie> cookies = cookieStore.getCookies();
+			for (int i = 0; i < cookies.size(); i++) {
+				System.out.println("Local cookie: " + cookies.get(i));
+			}
 			// 获取响应实体
 			HttpEntity httpEntity = httpResponse.getEntity();
 			if (httpEntity != null) {
@@ -114,22 +192,75 @@ public class HttpClientUtil {
 		return content;
 	}
 
+	public static HttpResponse getHttpResponse(String url, Map<String, String> paramsMap, Map<String, String> headerMap,
+			Map<String, String> cookieMap) {
+		StringBuffer paramsDataBuffer = new StringBuffer();
+		if (MapUtils.isNotEmpty(paramsMap)) {
+			paramsDataBuffer.append("?");
+			paramsMap.forEach(new BiConsumer<String, String>() {
+				@Override
+				public void accept(String key, String value) {
+					paramsDataBuffer.append(key).append("=").append(value).append("&");
+				}
+			});
+			paramsDataBuffer.deleteCharAt(paramsDataBuffer.length() - 1);
+		}
+		if (MapUtils.isNotEmpty(cookieMap)) {
+			StringBuffer paramsCookieBuffer = new StringBuffer();
+			cookieMap.forEach(new BiConsumer<String, String>() {
+				@Override
+				public void accept(String key, String value) {
+					paramsCookieBuffer.append(key).append("=").append(value).append(";");
+				}
+			});
+			paramsCookieBuffer.deleteCharAt(paramsCookieBuffer.length() - 1);
+			headerMap.put("Cookie", paramsCookieBuffer.toString());
+		}
+		url += paramsDataBuffer.toString();
+		return getHttpResponse(url, headerMap);
+	}
+
 	public static String getHttpDataAsUTF_8(String url, String refererUrl) {
+		Map<String, String> headerMap = new HashMap<String, String>();
+		headerMap.put("Referer", refererUrl);
+		return getHttpDataAsUTF_8(url, headerMap);
+	}
+
+	public static String getHttpDataAsUTF_8(String url, Map<String, String> headerMap) {
+		HttpResponse httpResponse = getHttpResponse(url, headerMap);
+		return getHttpDataByHttpResponse(httpResponse);
+	}
+
+	public static String getHttpDataByHttpResponse(HttpResponse httpResponse) {
 		String content = null;
+		// 获取响应实体
+		HttpEntity httpEntity = httpResponse.getEntity();
+		if (httpEntity != null) {
+			try {
+				content = EntityUtils.toString(httpEntity, "UTF-8");// 响应内容
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return content;
+	}
+
+	public static HttpResponse getHttpResponse(String url, Map<String, String> headerMap) {
+		HttpResponse httpResponse = null;
 		try {
 			HttpGet httpGet = new HttpGet(url);// 创建 httpUriRequest 实例
-			httpGet.addHeader("Referer", refererUrl);
-			HttpResponse httpResponse = HttpClient.execute(httpGet);// 执行 get 请求
-			HttpEntity httpEntity = httpResponse.getEntity();// 获取响应实体
-			if (httpEntity != null) {
-				// long length = httpEntity.getContentLength();// 响应内容的长度
-				content = EntityUtils.toString(httpEntity, "UTF-8");// 响应内容
-			}
+			headerMap.forEach(new BiConsumer<String, String>() {
+				@Override
+				public void accept(String key, String value) {
+					httpGet.addHeader(key, value);
+				}
+			});
+			httpResponse = HttpClient.execute(httpGet);// 执行 get 请求
 			httpGet.abort();// 有些教程里没有这行
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return content;
+		return httpResponse;
 	}
 
 	// 创建默认的 HttpClient 实例
@@ -167,5 +298,10 @@ public class HttpClientUtil {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
+	}
+	
+	public static void openBrowseURLThrowsException(String url) throws IOException, URISyntaxException {
+		Desktop desktop = Desktop.getDesktop();
+		desktop.browse(new URI(url));
 	}
 }
