@@ -21,7 +21,7 @@ public class MapTest {
 		map.put(null, null);
 		System.out.println(map.size());
 		System.out.println(map);
-		
+
 		Map<String, String> mapTable = new Hashtable<>();
 		mapTable.put(null, "a");
 		mapTable.put(null, "b");
@@ -31,14 +31,18 @@ public class MapTest {
 		System.out.println(mapTable.size());
 		System.out.println(mapTable);
 	}
-	
+
 	@Test
 	public void testField() {
-		Field[] fields = FieldUtils.getAllFields(IhsCombinedPositionsData.class);
+		getField(Object.class);
+	}
+
+	public void getField(Class<?> xclass) {
+		Field[] fields = FieldUtils.getAllFields(xclass);
 		StringBuffer stringBuffer = new StringBuffer();
 		for (Field field : fields) {
-			stringBuffer.append("pos.set"+StrUtil.fristToUpCase(field.getName()));
-			stringBuffer.append("(ParseUtils.getDoubleFromString("+field.getName()+"));\n");
+			stringBuffer.append("pos.set" + StrUtil.fristToUpCase(field.getName()));
+			stringBuffer.append("(ParseUtils.getDoubleFromString(" + field.getName() + "));\n");
 		}
 		System.out.println(stringBuffer.toString());
 	}

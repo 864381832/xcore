@@ -10,6 +10,12 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 
+/** 
+ * @ClassName: CaffeineTest 
+ * @Description: 是基于Java 8的高性能，接近最佳的缓存库
+ * @author: xufeng
+ * @date: 2017年8月31日 上午1:16:21  
+ */
 public class CaffeineTest {
 	@Test
 	public void test() throws Exception {

@@ -21,6 +21,12 @@ import com.googlecode.aviator.runtime.function.FunctionUtils;
 import com.googlecode.aviator.runtime.type.AviatorDouble;
 import com.googlecode.aviator.runtime.type.AviatorObject;
 
+/** 
+ * @ClassName: AviatorTest 
+ * @Description: aviator表达式引擎
+ * @author: xufeng
+ * @date: 2017年8月31日 上午1:16:49  
+ */
 public class AviatorTest {
 	@Test
 	public void testexecute() {
