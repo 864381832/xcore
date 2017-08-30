@@ -1,10 +1,14 @@
 package com.xwintop.xcore;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.Test;
+
+import com.xwintop.xcore.util.StrUtil;
 
 public class MapTest {
 	@Test
@@ -26,5 +30,16 @@ public class MapTest {
 		mapTable.put(null, null);
 		System.out.println(mapTable.size());
 		System.out.println(mapTable);
+	}
+	
+	@Test
+	public void testField() {
+		Field[] fields = FieldUtils.getAllFields(IhsCombinedPositionsData.class);
+		StringBuffer stringBuffer = new StringBuffer();
+		for (Field field : fields) {
+			stringBuffer.append("pos.set"+StrUtil.fristToUpCase(field.getName()));
+			stringBuffer.append("(ParseUtils.getDoubleFromString("+field.getName()+"));\n");
+		}
+		System.out.println(stringBuffer.toString());
 	}
 }

@@ -342,7 +342,12 @@
 			<version>1.16.18</version>
 			<!-- <scope>provided</scope> -->
 		</dependency>
-
+		<!-- aviator表达式引擎 -->
+		<dependency>
+			<groupId>com.googlecode.aviator</groupId>
+			<artifactId>aviator</artifactId>
+			<version>3.1.0</version>
+		</dependency>
 
 		<!-- 发送邮件包 -->
 		<dependency>
