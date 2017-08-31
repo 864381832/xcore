@@ -34,7 +34,8 @@ public class MapTest {
 
 	@Test
 	public void testField() {
-		getField(Object.class);
+//		getField(Object.class);
+		getField2(IhsCombinedPositionsData.class);
 	}
 
 	public void getField(Class<?> xclass) {
@@ -43,6 +44,18 @@ public class MapTest {
 		for (Field field : fields) {
 			stringBuffer.append("pos.set" + StrUtil.fristToUpCase(field.getName()));
 			stringBuffer.append("(ParseUtils.getDoubleFromString(" + field.getName() + "));\n");
+		}
+		System.out.println(stringBuffer.toString());
+	}
+	
+	public void getField2(Class<?> xclass) {
+		Field[] fields = FieldUtils.getAllFields(xclass);
+		StringBuffer stringBuffer = new StringBuffer();
+		int i = -1;
+		for (Field field : fields) {
+			stringBuffer.append("stmt.setString(" +i+",ihsCombinedPositionsData.get"+ StrUtil.fristToUpCase(field.getName()));
+			stringBuffer.append("());\n");
+			i++;
 		}
 		System.out.println(stringBuffer.toString());
 	}
