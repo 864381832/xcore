@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import lombok.ToString;
+
+@ToString
 public class Bill implements Serializable {
 	private static final long serialVersionUID = -8611913139453490297L;
 	private String id;

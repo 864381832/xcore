@@ -12,21 +12,21 @@ public class SerializationObject {
 	public static String serializationObject(Object obj) {
 		Kryo kryo = new Kryo();
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Output output = new Output(baos);
+		Output output = new Output(baos);
 		kryo.writeObject(output, obj);
 		output.close();
 		try {
-//			String string = new String(baos.toByteArray(),"ISO-8859-1");
+			// String string = new String(baos.toByteArray(),"ISO-8859-1");
 			return baos.toString("ISO-8859-1");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		return null;
-    }
- 
-	public static <T> T deserializationObject(String obj,Class<T> clazz) {
-        Kryo kryo = new Kryo();
-        ByteArrayInputStream bais = null;
+	}
+
+	public static <T> T deserializationObject(String obj, Class<T> clazz) {
+		Kryo kryo = new Kryo();
+		ByteArrayInputStream bais = null;
 		try {
 			bais = new ByteArrayInputStream(obj.getBytes("ISO-8859-1"));
 		} catch (UnsupportedEncodingException e) {
@@ -34,5 +34,22 @@ public class SerializationObject {
 		}
 		Input input = new Input(bais);
 		return kryo.readObject(input, clazz);
-    }
+	}
+
+	public static byte[] serializationObjectToByte(Object obj) {
+		Kryo kryo = new Kryo();
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		Output output = new Output(baos);
+		kryo.writeObject(output, obj);
+		output.close();
+		return baos.toByteArray();
+	}
+
+	public static <T> T deserializationObject(byte[] obj, Class<T> clazz) {
+		Kryo kryo = new Kryo();
+		ByteArrayInputStream bais = null;
+		bais = new ByteArrayInputStream(obj);
+		Input input = new Input(bais);
+		return kryo.readObject(input, clazz);
+	}
 }

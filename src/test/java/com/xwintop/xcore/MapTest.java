@@ -34,8 +34,7 @@ public class MapTest {
 
 	@Test
 	public void testField() {
-//		getField(Object.class);
-		getField2(IhsCombinedPositionsData.class);
+		getField(Object.class);
 	}
 
 	public void getField(Class<?> xclass) {
