@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -145,6 +146,17 @@ public class TestRedis {
 		jedis.set("testObject".getBytes(),someObjectByte);
 		someObject = SerializationObject.deserializationObject(jedis.get("testObject".getBytes()),Bill.class);
 		System.out.println(someObject);
+	}
+	
+	@Test
+	public void testObject2() throws InterruptedException {
+		System.out.println(jedis.dbSize());
+		jedis.select(1);
+		Set<String> nodekeys = jedis.keys("*");
+		System.out.println(nodekeys);
+		List<String> dbs = jedis.configGet("databases");
+		if(dbs.size() > 0)
+		System.out.println(dbs.get(1));
 	}
 
 	@Test
