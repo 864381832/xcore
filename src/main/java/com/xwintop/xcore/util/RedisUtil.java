@@ -1,6 +1,7 @@
 package com.xwintop.xcore.util;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,8 +16,8 @@ public class RedisUtil {
 	private Jedis jedis;
 	private int id;
 
-	/** 
-	 * @Title: getDbAmount 
+	/**
+	 * @Title: getDbAmount
 	 * @Description: 获取数据库db大小
 	 */
 	public int getDbAmount() {
@@ -30,10 +31,14 @@ public class RedisUtil {
 		}
 		return dbAmount;
 	}
-	
+
 	public Long getDbSize() {
-		jedis.select(id);
 		return jedis.dbSize();
+	}
+
+	public Set<String> getListKeys() {
+		Set<String> nodekeys = jedis.keys("*");
+		return nodekeys;
 	}
 
 	public RedisUtil(Jedis jedis) {
@@ -49,5 +54,10 @@ public class RedisUtil {
 		if (StringUtils.isNotEmpty(password)) {
 			jedis.auth(password);
 		}
+	}
+
+	public void setId(int id) {
+		jedis.select(id);
+		this.id = id;
 	}
 }
