@@ -161,7 +161,7 @@ public class TestRedis {
 
 	@Test
 	public void testRedisPool() {
-		RedisUtil.getJedis().set("newname", "中文测试");
-		System.out.println(RedisUtil.getJedis().get("newname"));
+		TestRedisUtil.getJedis().set("newname", "中文测试");
+		System.out.println(TestRedisUtil.getJedis().get("newname"));
 	}
 }

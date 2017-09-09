@@ -4,7 +4,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
-public final class RedisUtil {
+public final class TestRedisUtil {
     
     //Redis服务器IP
     private static String ADDR = "192.168.0.100";
