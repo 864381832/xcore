@@ -12,6 +12,7 @@ import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import org.junit.Test;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -27,9 +28,14 @@ public class TestQueryMap {
 	
 	@Test
     public void queryFromWS() throws Exception {
+		Map map = QueryMapUtil.queryMap("{\"PARAM\":\"1\"}", "DPORTAL_COARRI", null);
+		System.out.println(map);
     	String url = "http://192.168.131.243:7001/GDWS/GCCData?WSDL";
-        String queryData = "{\"GCCQuery\":{\"OrderBy\":{\"keyName\":{\"text\":\"\",\"attributes\":{\"type\":\"\"}}},\"Page\":{\"targetPage\":1,\"totalCount\":0,\"pageSize\":10},\"Info\":{\"QueryType\":\"DPORTAL_MONITOR_NEW\"},\"Criteria\":{\"Key\":[{\"name\":\"PARAM\",\"value\":\"223120160820626387\"},{\"name\":\"TRADE_CODE\",\"value\":\"\"},{\"name\":\"OWNER_CODE\",\"value\":\"\"},{\"name\":\"DECL_CODE\",\"value\":\"\"}]}}}";
-        QueryMapUtil queryMapUtil = new QueryMapUtil();
+//        String queryData = "{\"GCCQuery\":{\"OrderBy\":{\"keyName\":{\"text\":\"\",\"attributes\":{\"type\":\"\"}}},\"Page\":{\"targetPage\":1,\"totalCount\":0,\"pageSize\":10},\"Info\":{\"QueryType\":\"DPORTAL_MONITOR_NEW\"},\"Criteria\":{\"Key\":[{\"name\":\"PARAM\",\"value\":\"223120160820626387\"},{\"name\":\"TRADE_CODE\",\"value\":\"\"},{\"name\":\"OWNER_CODE\",\"value\":\"\"},{\"name\":\"DECL_CODE\",\"value\":\"\"}]}}}";
+//        String queryData = "{\"GCCQuery\":{\"OrderBy\":{\"keyName\":{\"text\":\"\",\"attributes\":{\"type\":\"\"}}},\"Page\":{\"targetPage\":1,\"totalCount\":0,\"pageSize\":10},\"Info\":{\"QueryType\":\"DPORTAL_COARRI\"},\"Criteria\":{\"Key\":[{\"name\":\"PARAM\",\"value\":\"COS9\"}]}}}";
+    	String queryData = JSON.toJSONString(map);
+    	System.out.println(queryData);
+    	QueryMapUtil queryMapUtil = new QueryMapUtil();
         queryMapUtil.queryFromWS(url, queryData);
 	}
 

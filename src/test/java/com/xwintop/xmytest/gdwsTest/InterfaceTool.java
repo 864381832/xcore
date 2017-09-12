@@ -7,8 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -136,6 +140,29 @@ public class InterfaceTool {
         return rtnMap;
     }*/
 
+	public static void returnMap(String resultStr){
+		JSONObject mainJSONObject = JSON.parseObject(resultStr);
+		if(StringUtils.isNotEmpty(mainJSONObject.getString("GCCResult"))){
+			JSONObject GCCResult = mainJSONObject.getJSONObject("GCCResult");
+			if(GCCResult.getInteger("@code") == 0){
+				JSONArray sets = GCCResult.getJSONArray("sets");
+				if(!sets.isEmpty()){
+					for(Object jSONObject:sets){
+						JSONArray fields = ((JSONObject) jSONObject).getJSONArray("fields");
+						int fieldsSize = fields.size();
+						if (fieldsSize > 0) {
+							for(int i = 0;i<fieldsSize;i++){
+//								JSONObject field = fields.getJSONObject(i);
+								Map fieldMap = fields.getObject(i, Map.class);
+								System.out.println(fieldMap);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
     public static Map rtnMap(String resultStr, List<String> excludeList) {
         Map rtnMap = new HashMap();
         rtnMap.put("status", HttpStatus.OK.value());

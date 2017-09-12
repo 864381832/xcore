@@ -113,6 +113,7 @@ public class QueryMapUtil {
                 String retVal = (String) result[0];
                 log.info("调用接口获取业务数据成功,返回结果串:" + retVal);
                 // 获取界面显示数据列表
+                InterfaceTool.returnMap(retVal);
                 Map<String, Object> dataMap = (HashMap<String, Object>) InterfaceTool.rtnMap(retVal, null);
                 if ("200".equals(dataMap.get("status").toString())) {
                 	long webEndTime = System.currentTimeMillis();
