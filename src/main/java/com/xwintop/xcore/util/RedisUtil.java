@@ -1,5 +1,6 @@
 package com.xwintop.xcore.util;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -8,9 +9,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import lombok.Getter;
 import lombok.Setter;
+import redis.clients.jedis.BinaryClient.LIST_POSITION;
 import redis.clients.jedis.Client;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.BinaryClient.LIST_POSITION;
+import redis.clients.jedis.SortingParams;
+import redis.clients.jedis.Tuple;
 import redis.clients.jedis.exceptions.JedisException;
 
 @Getter
@@ -39,6 +42,25 @@ public class RedisUtil {
 
 	public void del(String... key){
 		jedis.del(key);
+	}
+	
+	/** 
+	 * @Title: delAll 
+	 * @Description: 删除本表所有数据
+	 */
+	public void delAll(){
+		Set<String> keys = getKeys();
+		for(String key:keys){
+			jedis.del(key);
+		}
+	} 
+	
+	/** 
+	 * @Title: flushAll 
+	 * @Description: 清空所有数据
+	 */
+	public void flushAll(){
+		jedis.flushAll();
 	}
 	
 	public String getString(String key) {
@@ -109,6 +131,36 @@ public class RedisUtil {
 		}
 	}
 	
+	public Set<String> getSet(String key) {
+		return jedis.smembers(key);
+	}
+
+	public Set<String> getSet(String key, int start, int end) {
+		SortingParams sp = new SortingParams();
+		sp.alpha();
+		sp.limit(start, end-start);
+		return new HashSet<String>(jedis.sort(key, sp));
+	}
+	
+	public void addSet(String key, Set<String> values) {
+		for(String value: values){
+			jedis.sadd(key, value);
+		}
+	}
+	
+	public void removeSet(String key, Set<String> values) {
+		for(String value: values){
+			jedis.srem(key, value);
+		}
+	}
+	
+	public void updateSet(String key, Set<String> values) {
+		Long time = jedis.ttl(key);
+		jedis.del(key);
+		addSet(key,values);
+		setDeadLine(key,time.intValue());
+	}
+	
 	public void addHash(String key, Map<String, String> values) {
 		jedis.hmset(key, values);
 	}
@@ -135,12 +187,37 @@ public class RedisUtil {
 		addHash(key, values);
 		setDeadLine(key,time.intValue());
 	}
+	
+	public Set<Tuple> getZSet(String key) {
+		return jedis.zrangeWithScores(key, 0, -1);
+	}
+	
+	public Set<Tuple> getZSet(String key, int start, int end) {
+		return jedis.zrangeWithScores(key, start, end);
+	}
+	
+	public void addZSet(String key, Map<String, Double> values) {
+//		for(Map.Entry<String, Double> value: values.entrySet())
+//			jedis.zadd(key, value.getValue(), value.getKey());
+		jedis.zadd(key, values);
+	}
+	
+	public void removeZSet(String key, String[] values) {
+		jedis.zrem(key, values);
+	}
+	
+	public void updateZSet(String key, Map<String, Double> values) {
+		Long time = jedis.ttl(key);
+		jedis.del(key);
+		addZSet(key, values);
+		setDeadLine(key,time.intValue());
+	}
 
 	public Long getDbSize() {
 		return jedis.dbSize();
 	}
 
-	public Set<String> getListKeys() {
+	public Set<String> getKeys() {
 		Set<String> nodekeys = jedis.keys("*");
 		return nodekeys;
 	}
