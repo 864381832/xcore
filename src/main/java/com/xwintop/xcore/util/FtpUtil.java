@@ -1,14 +1,19 @@
 package com.xwintop.xcore.util;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 public class FtpUtil {
 	/**
 	 * Description: 向FTP服务器上传文件 @Version1.0 Jul 27, 2008 4:31:09 PM by
@@ -122,5 +127,63 @@ public class FtpUtil {
 		}
 		return success;
 	}
-}
 
+	/**
+	 * 删除指定文件
+	 * 
+	 * @param filePath文件路径(含文件名)
+	 */
+	public static boolean deleteFile(String url, int port, String username, String password, String filePath) {
+		try {
+			if (StringUtils.isNotEmpty(filePath)) {
+				FTPClient ftp = new FTPClient();
+				int reply;
+				ftp.connect(url, port);
+				// 如果采用默认端口，可以使用ftp.connect(url)的方式直接连接FTP服务器
+				ftp.login(username, password);// 登录
+				reply = ftp.getReplyCode();
+				if (!FTPReply.isPositiveCompletion(reply)) {
+					ftp.disconnect();
+					return false;
+				}
+				if (!ftp.deleteFile(filePath)) {
+					return false;
+				}
+			}
+		} catch (IOException e) {
+			log.error("删除文件失败：", e);
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @Title: removeDirectory
+	 * @Description: 移除目录
+	 */
+	public static boolean removeDirectory(String url, int port, String username, String password, String pathname) {
+		try {
+			if (StringUtils.isNotEmpty(pathname)) {
+				FTPClient ftp = new FTPClient();
+				int reply;
+				ftp.connect(url, port);
+				// 如果采用默认端口，可以使用ftp.connect(url)的方式直接连接FTP服务器
+				ftp.login(username, password);// 登录
+				reply = ftp.getReplyCode();
+				if (!FTPReply.isPositiveCompletion(reply)) {
+					ftp.disconnect();
+					return false;
+				}
+				if (!ftp.removeDirectory(pathname)) {
+					return false;
+				}
+			}
+		} catch (IOException e) {
+			log.error("删除文件夹失败：", e);
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+}

@@ -31,4 +31,16 @@ public class FtpTest {
 		boolean flag = FtpUtil.downFile(url, port, username, password, filePath, fileName, "D:/");
 		log.error("下载ftp结果：" + flag);
 	}
+	
+	@Test
+	public void testDeleteFile() throws Exception {
+		boolean flag = FtpUtil.deleteFile(url, port, username, password, "/test.txt");
+		log.info("删除ftp文件结果：" + flag);
+	}
+	
+	@Test
+	public void testRemoveDirectory() throws Exception {
+		boolean flag = FtpUtil.removeDirectory(url, port, username, password,"/test");
+		log.info("删除ftp文件夹结果：" + flag);
+	}
 }

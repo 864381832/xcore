@@ -2,12 +2,15 @@ package com.xwintop.tool;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -79,6 +82,33 @@ public class OkHttpTest {
 		Response response = client.newCall(request).execute();
 		if (!response.isSuccessful())
 			throw new IOException("Unexpected code " + response);
+		System.out.println(response.body().string());
+	}
+	
+	@Test
+//	Post方式提交String
+	public void testPost3() throws Exception {
+//		String postBody = "{\"desc\":[\"鲜、冷牛肉d\"]}";
+//		String postBody = "{\"desc\":[]}";
+		String postBody = "{\"desc\":[\"\"]}";
+		Request request = new Request.Builder().url("http://192.168.5.79:8788/predict")
+				.post(RequestBody.create(MEDIA_TYPE_MARKDOWN, postBody)).build();
+		Response response = client.newCall(request).execute();
+//		if (!response.isSuccessful())
+//			throw new IOException("Unexpected code " + response);
+		System.out.println(response.body().string());
+	}
+	
+	@Test
+	// Post方式提交String
+	public void testPost2() throws Exception {
+		RequestBody body = new FormBody.Builder().add("desc", "你好")// 添加键值对
+				.build();
+		Request request = new Request.Builder().url("http://192.168.5.79:8788/predict")
+				.addHeader("Content-Type", "application/json").post(body).build();
+		Response response = client.newCall(request).execute();
+//		if (!response.isSuccessful())
+//			throw new IOException("Unexpected code " + response);
 		System.out.println(response.body().string());
 	}
 	

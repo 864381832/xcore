@@ -101,6 +101,18 @@ public class MapTest {
 	}
 	
 	@Test
+	public void testInster(){
+		String[] ids = {"OOLU4030430560"};
+		int i = 0;
+		StringBuilder stringBuilder = new StringBuilder();
+		for(String BILL_NO:ids){
+			stringBuilder.append("INSERT INTO SHIP_AGENT_HS_BILL (ID,BILL_NO,STATUS,HS_CODE,CREATE_TIME) values (");
+			stringBuilder.append(i).append(",'"+BILL_NO+"','1','',sysdate);");
+		}
+		System.out.println(stringBuilder.toString());
+	}
+	
+	@Test
 	public void testField() {
 		System.out.println((-5)*(-5));
 		//		getField(Object.class);
