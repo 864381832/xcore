@@ -418,6 +418,14 @@
 			<systemPath>${JAVA_HOME}/lib/tools.jar</systemPath>
 		</dependency>
 	</dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>xwintop-mvn-xcore</id>
+            <url>file:C:/gitFiles/maven/repository/</url>
+        </repository>
+    </distributionManagement>
+
 	<build>
 		<plugins>
 			<plugin>
