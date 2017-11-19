@@ -421,7 +421,7 @@
 
     <distributionManagement>
         <repository>
-            <id>xwintop-mvn-xcore</id>
+            <id>xwintop-maven</id>
             <url>file:C:/gitFiles/maven/repository/</url>
         </repository>
     </distributionManagement>
