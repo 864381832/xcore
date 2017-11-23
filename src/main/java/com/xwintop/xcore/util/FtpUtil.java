@@ -13,7 +13,7 @@ import org.apache.commons.net.ftp.FTPReply;
 
 import lombok.extern.log4j.Log4j;
 
-@Log4j
+//@Log4j
 public class FtpUtil {
 	/**
 	 * Description: 向FTP服务器上传文件 @Version1.0 Jul 27, 2008 4:31:09 PM by
@@ -151,8 +151,8 @@ public class FtpUtil {
 				}
 			}
 		} catch (IOException e) {
-			log.error("删除文件失败：", e);
-			e.printStackTrace();
+//			log.error("删除文件失败：", e);
+//			e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -180,7 +180,7 @@ public class FtpUtil {
 				}
 			}
 		} catch (IOException e) {
-			log.error("删除文件夹失败：", e);
+//			log.error("删除文件夹失败：", e);
 			e.printStackTrace();
 			return false;
 		}

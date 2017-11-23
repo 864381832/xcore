@@ -12,124 +12,11 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring-framework.version>4.3.8.RELEASE</spring-framework.version>
 		<jackson.mapper.version>2.2.3</jackson.mapper.version>
 		<shiro.version>1.3.2</shiro.version>
 	</properties>
 
 	<dependencies>
-		<!-- Spring开始 -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>${spring-framework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-expression</artifactId>
-			<version>${spring-framework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-			<version>${spring-framework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<version>${spring-framework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring-framework.version}</version>
-			<exclusions>
-				<!-- Exclude Commons Logging in favor of SLF4j -->
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-			<version>${spring-framework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>${spring-framework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${spring-framework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-			<version>${spring-framework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-oxm</artifactId>
-			<version>${spring-framework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>${spring-framework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>${spring-framework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc-portlet</artifactId>
-			<version>${spring-framework.version}</version>
-		</dependency>
-		<!-- Spring结束 -->
-
-		<!-- mysql的数据库驱动包 -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>6.0.5</version>
-		</dependency>
-
-		<!-- oracle的数据库驱动包 -->
-		<dependency>
-			<groupId>cn.easyproject</groupId>
-			<artifactId>ojdbc7</artifactId>
-			<version>12.1.0.2.0</version>
-		</dependency>
-
-		<!-- Tomcat的JDBC连接池 -->
-		<!-- <dependency> <groupId>org.apache.tomcat</groupId> <artifactId>tomcat-jdbc</artifactId> 
-			<version>8.5.9</version> </dependency> -->
-		<!-- alibaba的JDBC连接池 -->
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
-			<version>1.1.2</version>
-		</dependency>
-
-		<!-- Mybatis和Spring的 整合包，是mybatis出的 -->
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring</artifactId>
-			<version>1.3.1</version>
-		</dependency>
-		<!-- Mybatis 开发包 -->
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-			<version>3.4.3</version>
-		</dependency>
-
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -148,10 +35,6 @@
 			<artifactId>gson</artifactId>
 			<version>2.8.0</version>
 		</dependency>
-		<!-- jodd 开发工具包 -->
-		<!-- <dependency> <groupId>org.jodd</groupId> <artifactId>jodd-all</artifactId> 
-			<version>3.8.1</version> </dependency> -->
-
 		<!-- logback日志记录 -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
@@ -172,86 +55,11 @@
 			<version>2.3.0</version>
 		</dependency>
 
-		<!-- JSTL标签库 -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-		</dependency>
-		<!-- tomcat servlet开发包 -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>2.2</version>
-		</dependency>
-
-		<!-- Shrio config start -->
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-core</artifactId>
-			<version>${shiro.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-web</artifactId>
-			<version>${shiro.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-aspectj</artifactId>
-			<version>${shiro.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-ehcache</artifactId>
-			<version>${shiro.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-quartz</artifactId>
-			<version>${shiro.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-spring</artifactId>
-			<version>${shiro.version}</version>
-		</dependency>
-		<!-- Shrio config end -->
-
-		<!-- activemq -->
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-all</artifactId>
-			<version>5.14.5</version>
-		</dependency>
-
 		<!-- 序列化工具包 -->
 		<dependency>
 			<groupId>com.esotericsoftware</groupId>
 			<artifactId>kryo</artifactId>
 			<version>4.0.0</version>
-		</dependency>
-
-		<!-- solr api -->
-		<dependency>
-			<groupId>org.apache.solr</groupId>
-			<artifactId>solr-solrj</artifactId>
-			<version>6.5.1</version>
-		</dependency>
-
-		<!-- json转换工具包 -->
-		<dependency>
-			<groupId>net.sf.json-lib</groupId>
-			<artifactId>json-lib</artifactId>
-			<version>2.4</version>
-			<classifier>jdk15</classifier>
 		</dependency>
 
 		<!-- javaFx开发工具包 -->
@@ -316,12 +124,12 @@
 			<version>3.6</version>
 		</dependency>
 
-		<dependency>
+		<!--<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>apache-cxf</artifactId>
 			<version>3.1.11</version>
 			<type>pom</type>
-		</dependency>
+		</dependency>-->
 
 		<!-- okhttp3网络工具包 -->
 		<dependency>
@@ -336,11 +144,6 @@
 			<artifactId>janino</artifactId>
 			<version>2.7.5</version>
 		</dependency>
-
-		<!-- 测试使用包 开始 -->
-		<!-- <dependency> <groupId>org.easymock</groupId> <artifactId>easymock</artifactId> 
-			<version>3.4</version> </dependency> -->
-		<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
 
 		<!-- Caffeine 是基于Java 8的高性能，接近最佳的缓存库 -->
 		<dependency>
@@ -362,12 +165,6 @@
 			<version>1.16.18</version>
 			<!-- <scope>provided</scope> -->
 		</dependency>
-		<!-- aviator表达式引擎 -->
-		<dependency>
-			<groupId>com.googlecode.aviator</groupId>
-			<artifactId>aviator</artifactId>
-			<version>3.1.0</version>
-		</dependency>
 
 		<!-- redis操作工具类 -->
 		<dependency>
@@ -383,32 +180,6 @@
 			<version>1.4</version>
 		</dependency>
 		<!-- 测试使用包 结束 -->
-
-		<!-- Hadoop开发 -->
-		<!-- <dependency> <groupId>org.apache.hadoop</groupId> <artifactId>hadoop-common</artifactId> 
-			<version>2.8.0</version> </dependency> <dependency> <groupId>org.apache.hadoop</groupId> 
-			<artifactId>hadoop-hdfs</artifactId> <version>2.8.0</version> </dependency> 
-			<dependency> <groupId>org.apache.hadoop</groupId> <artifactId>hadoop-mapreduce-client-core</artifactId> 
-			<version>2.8.0</version> </dependency> <dependency> <groupId>org.apache.hadoop</groupId> 
-			<artifactId>hadoop-mapreduce-client-common</artifactId> <version>2.8.0</version> 
-			</dependency> -->
-		<!-- Hadoop开发 -->
-
-		<!-- kafka开发 -->
-		<dependency>
-			<groupId>org.apache.kafka</groupId>
-			<artifactId>kafka-clients</artifactId>
-			<version>0.11.0.1</version>
-		</dependency>
-		<!-- kafka开发 -->
-
-        <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.196</version>
-            <scope>test</scope>
-        </dependency>
 
 		<dependency>
 			<groupId>jdk.tools</groupId>
