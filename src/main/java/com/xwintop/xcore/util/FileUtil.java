@@ -1,6 +1,7 @@
 package com.xwintop.xcore.util;
 
 import java.io.File;
+import java.text.DecimalFormat;
 
 public class FileUtil {
 	public static String[] getFileNames(File file) {
@@ -42,4 +43,25 @@ public class FileUtil {
 		}
 		return fileName;
 	}
+
+    /**
+     * 转换文件的大小以B,KB,M,G等计算
+     *
+     * @param fileS
+     * @return
+     */
+    public static String FormetFileSize(long fileS) {// 转换文件大小
+        DecimalFormat df = new DecimalFormat("#.000");
+        String fileSizeString = "";
+        if (fileS < 1024) {
+            fileSizeString = df.format((double) fileS) + "B";
+        } else if (fileS < 1048576) {
+            fileSizeString = df.format((double) fileS / 1024) + "K";
+        } else if (fileS < 1073741824) {
+            fileSizeString = df.format((double) fileS / 1048576) + "M";
+        } else {
+            fileSizeString = df.format((double) fileS / 1073741824) + "G";
+        }
+        return fileSizeString;
+    }
 }
