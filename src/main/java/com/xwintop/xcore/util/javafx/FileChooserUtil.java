@@ -38,13 +38,25 @@ public class FileChooserUtil {
      * @Description: 选择文件
      */
     public static File chooseFile() {
+        return chooseFile(null);
+    }
+
+    /**
+     * @Title: chooseFile
+     * @Description: 选择文件
+     */
+    public static File chooseFile(ExtensionFilter... extensionFilter) {
         File file = null;
         try {
             FileChooser fileChooser = new FileChooser();
-            // fileChooser.setTitle("请选择文件");
-            // fileChooser.getExtensionFilters().addAll(new
-            // FileChooser.ExtensionFilter("文本文件 (*.*.txt)", "*.txt"),
-            // new FileChooser.ExtensionFilter("二进制的对象文件 (*.*.dat)", "*.dat"));
+            fileChooser.setTitle("请选择文件");
+            fileChooser.setInitialDirectory(FileSystemView.getFileSystemView().getHomeDirectory());
+            if (extensionFilter != null) {
+                fileChooser.getExtensionFilters().addAll(extensionFilter);
+                // fileChooser.getExtensionFilters().addAll(new
+                // FileChooser.ExtensionFilter("文本文件 (*.*.txt)", "*.txt"),
+                // new FileChooser.ExtensionFilter("二进制的对象文件 (*.*.dat)", "*.dat"));
+            }
             file = fileChooser.showOpenDialog(null);
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -57,7 +69,7 @@ public class FileChooserUtil {
      * @Title: chooseSaveFile
      * @Description: 选择保存文件
      */
-    public static File chooseFile(ExtensionFilter... extensionFilter) {
+    public static File chooseSaveFile(ExtensionFilter... extensionFilter) {
         return chooseSaveFile(null, extensionFilter);
     }
 
