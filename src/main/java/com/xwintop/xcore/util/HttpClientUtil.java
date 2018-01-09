@@ -325,6 +325,21 @@ public class HttpClientUtil {
 		return null;
 	}
 
+	public static String getHttpDataByPost(String url, String refererUrl, String string) {
+		try {
+			OkHttpClient client = new OkHttpClient();
+			RequestBody body = RequestBody.create(MediaType.parse("text/x-markdown; charset=utf-8"),string);
+			Map<String, String> headerMap = new HashMap<String, String>();
+			headerMap.put("Referer", refererUrl);
+			Request request = new Request.Builder().url(url).post(body).headers(Headers.of(headerMap)).build();
+			Response response = client.newCall(request).execute();
+			return response.body().string();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public static void openBrowseURL(String url) {
 		Desktop desktop = Desktop.getDesktop();
 		try {
