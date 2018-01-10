@@ -326,9 +326,13 @@ public class HttpClientUtil {
 	}
 
 	public static String getHttpDataByPost(String url, String refererUrl, String string) {
+		return getHttpDataByPost(url,refererUrl,string,"text/x-markdown; charset=utf-8");
+	}
+
+	public static String getHttpDataByPost(String url, String refererUrl, String string,String header) {
 		try {
 			OkHttpClient client = new OkHttpClient();
-			RequestBody body = RequestBody.create(MediaType.parse("text/x-markdown; charset=utf-8"),string);
+			RequestBody body = RequestBody.create(MediaType.parse(header),string);
 			Map<String, String> headerMap = new HashMap<String, String>();
 			headerMap.put("Referer", refererUrl);
 			Request request = new Request.Builder().url(url).post(body).headers(Headers.of(headerMap)).build();
