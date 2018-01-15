@@ -8,7 +8,8 @@
 	<packaging>jar</packaging>
 
 	<name>xcore</name>
-	<url>http://maven.apache.org</url>
+	<description>xcore核心jar包</description>
+	<url>https://gitee.com/xwintop/xcore</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
