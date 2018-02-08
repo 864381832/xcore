@@ -1,19 +1,14 @@
 package com.xwintop.xcore.util;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
-import lombok.extern.log4j.Log4j;
+import java.io.*;
 
-//@Log4j
+@Slf4j
 public class FtpUtil {
 	/**
 	 * Description: 向FTP服务器上传文件 @Version1.0 Jul 27, 2008 4:31:09 PM by
@@ -131,7 +126,7 @@ public class FtpUtil {
 	/**
 	 * 删除指定文件
 	 * 
-	 * @param filePath文件路径(含文件名)
+	 * @param filePath 文件路径(含文件名)
 	 */
 	public static boolean deleteFile(String url, int port, String username, String password, String filePath) {
 		try {
@@ -151,7 +146,7 @@ public class FtpUtil {
 				}
 			}
 		} catch (IOException e) {
-//			log.error("删除文件失败：", e);
+			log.error("删除文件失败：", e);
 //			e.printStackTrace();
 			return false;
 		}
@@ -180,8 +175,8 @@ public class FtpUtil {
 				}
 			}
 		} catch (IOException e) {
-//			log.error("删除文件夹失败：", e);
-			e.printStackTrace();
+			log.error("删除文件夹失败：", e);
+//			e.printStackTrace();
 			return false;
 		}
 		return true;

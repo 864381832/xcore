@@ -1,6 +1,7 @@
 package com.xwintop.xcore.util;
 
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @ClassName: SystemInfoUtil
  * @Description: 获取系统信息工具类
@@ -8,7 +9,7 @@ import lombok.extern.java.Log;
  * @date: 2018/1/31 15:09
  */
 
-@Log
+@Slf4j
 public class SystemInfoUtil {
     /**
      * 获取Hosts文件路径
@@ -21,7 +22,7 @@ public class SystemInfoUtil {
         } else {
             fileName = "C://WINDOWS//system32//drivers//etc//hosts";
         }
-        log.info("fileName:"+fileName);
+        log.info("获取hosts文件路径:"+fileName);
         return fileName;
     }
 }
