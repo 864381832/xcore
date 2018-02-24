@@ -25,4 +25,15 @@ public class SystemInfoUtil {
         log.info("获取hosts文件路径:"+fileName);
         return fileName;
     }
+
+    /**
+     * 判断系统是否为windows
+     */
+    public static boolean getIsWindows(){
+        String os = System.getProperty("os.name");
+        if(os.toLowerCase().startsWith("win")){
+            return true;
+        }
+        return false;
+    }
 }
