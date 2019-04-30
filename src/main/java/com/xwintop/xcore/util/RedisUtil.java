@@ -9,11 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import lombok.Getter;
 import lombok.Setter;
-import redis.clients.jedis.BinaryClient.LIST_POSITION;
-import redis.clients.jedis.Client;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.SortingParams;
-import redis.clients.jedis.Tuple;
+import redis.clients.jedis.*;
 import redis.clients.jedis.exceptions.JedisException;
 
 @Getter
@@ -76,7 +72,7 @@ public class RedisUtil {
 	}
 
 	public void insertList(String key, boolean beforeAfter, String pivot, String value) {
-		jedis.linsert(key, beforeAfter ? LIST_POSITION.BEFORE : LIST_POSITION.AFTER, pivot, value);
+		jedis.linsert(key, beforeAfter ? ListPosition.BEFORE : ListPosition.AFTER, pivot, value);
 	}
 
 	public List<String> getList(String key) {
