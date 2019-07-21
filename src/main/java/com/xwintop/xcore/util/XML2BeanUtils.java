@@ -29,8 +29,9 @@ public class XML2BeanUtils {
 	 * @return String 转换后的xml 字符串
 	 */
 	public static String bean2XmlString(Object obj) throws IOException, SAXException, IntrospectionException {
-		if (obj == null)
-			throw new IllegalArgumentException("给定的参数不能为null！");
+		if (obj == null) {
+            throw new IllegalArgumentException("给定的参数不能为null！");
+        }
 		StringWriter sw = new StringWriter();
 		sw.write(xmlHead);// 写xml文件头
 		BeanWriter writer = new BeanWriter(sw);
@@ -61,8 +62,9 @@ public class XML2BeanUtils {
 	@SuppressWarnings("unchecked")
 	public static <T> T xmlSring2Bean(Class<T> beanClass, String xmlFile)
 			throws IntrospectionException, IOException, SAXException {
-		if (beanClass == null || xmlFile == null || xmlFile.isEmpty())
-			throw new IllegalArgumentException("给定的参数不能为null！");
+		if (beanClass == null || xmlFile == null || xmlFile.isEmpty()) {
+            throw new IllegalArgumentException("给定的参数不能为null！");
+        }
 		StringReader xmlReader = new StringReader(xmlFile);
 		BeanReader reader = new BeanReader();
 		reader.getXMLIntrospector().getConfiguration().setAttributesForPrimitives(false);
@@ -91,8 +93,9 @@ public class XML2BeanUtils {
 		@Override
 		@SuppressWarnings("rawtypes")
 		public Object stringToObject(String string, Class type, String flavour, Context context) {
-			if (string == null || "".equals(string))
-				return null;
+			if (string == null || "".equals(string)) {
+                return null;
+            }
 			return super.stringToObject(string, type, flavour, context);
 		}
 

@@ -42,9 +42,9 @@ public class MoneyToChineseUtil {
 			decimalStr = "";
 		}
 		// integerStr去掉首0，不必去掉decimalStr的尾0(超出部分舍去)
-		if (!integerStr.equals("")) {
+		if (!"".equals(integerStr)) {
 			integerStr = Long.toString(Long.parseLong(integerStr));
-			if (integerStr.equals("0")) {
+			if ("0".equals(integerStr)) {
 				integerStr = "";
 			}
 		}
@@ -83,16 +83,22 @@ public class MoneyToChineseUtil {
 			String key = "";
 			if (integers[i] == 0) {
 				if ((length - i) == 13)// 万(亿)(必填)
-					key = IUNIT[4];
-				else if ((length - i) == 9)// 亿(必填)
-					key = IUNIT[8];
-				else if ((length - i) == 5 && isMust5)// 万(不必填)
-					key = IUNIT[4];
-				else if ((length - i) == 1)// 元(必填)
-					key = IUNIT[0];
+                {
+                    key = IUNIT[4];
+                } else if ((length - i) == 9)// 亿(必填)
+                {
+                    key = IUNIT[8];
+                } else if ((length - i) == 5 && isMust5)// 万(不必填)
+                {
+                    key = IUNIT[4];
+                } else if ((length - i) == 1)// 元(必填)
+                {
+                    key = IUNIT[0];
+                }
 				// 0遇非0时补零，不包含最后一位
-				if ((length - i) > 1 && integers[i + 1] != 0)
-					key += NUMBERS[0];
+				if ((length - i) > 1 && integers[i + 1] != 0) {
+                    key += NUMBERS[0];
+                }
 			}
 			chineseInteger.append(integers[i] == 0 ? key : (NUMBERS[integers[i]] + IUNIT[length - i - 1]));
 		}
@@ -106,8 +112,9 @@ public class MoneyToChineseUtil {
 		StringBuffer chineseDecimal = new StringBuffer("");
 		for (int i = 0; i < decimals.length; i++) {
 			// 舍去3位小数之后的
-			if (i == 3)
-				break;
+			if (i == 3) {
+                break;
+            }
 			chineseDecimal.append(decimals[i] == 0 ? "" : (NUMBERS[decimals[i]] + DUNIT[i]));
 		}
 		return chineseDecimal.toString();

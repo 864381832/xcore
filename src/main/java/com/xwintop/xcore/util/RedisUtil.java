@@ -28,8 +28,9 @@ public class RedisUtil {
 		int dbAmount = 0;
 		try {
 			List<String> dbs = jedis.configGet("databases");
-			if (dbs.size() > 0)
-				dbAmount = Integer.parseInt(dbs.get(1));
+			if (dbs.size() > 0) {
+                dbAmount = Integer.parseInt(dbs.get(1));
+            }
 		} catch (JedisException e) {
 			dbAmount = 15;
 		}
@@ -93,14 +94,15 @@ public class RedisUtil {
 	 */
 	public void addList(String key, List<String> values, boolean headTail, boolean exist) {
 		for (String value : values) {
-			if (headTail && exist)
-				jedis.rpush(key, value);
-			else if (headTail && !exist)
-				jedis.rpushx(key, value);
-			else if (!headTail && exist)
-				jedis.lpush(key, value);
-			else
-				jedis.lpushx(key, value);
+			if (headTail && exist) {
+                jedis.rpush(key, value);
+            } else if (headTail && !exist) {
+                jedis.rpushx(key, value);
+            } else if (!headTail && exist) {
+                jedis.lpush(key, value);
+            } else {
+                jedis.lpushx(key, value);
+            }
 		}
 	}
 	
@@ -225,16 +227,17 @@ public class RedisUtil {
 	public Long getSize(String key) {
 		Long size;
 		String type = jedis.type(key);
-		if (type.equals("string"))
-			size = (long) 1;
-		else if (type.equals("hash"))
-			size = jedis.hlen(key);
-		else if (type.equals("list"))
-			size = jedis.llen(key);
-		else if (type.equals("set"))
-			size = jedis.scard(key);
-		else
-			size = jedis.zcard(key);
+		if ("string".equals(type)) {
+            size = (long) 1;
+        } else if ("hash".equals(type)) {
+            size = jedis.hlen(key);
+        } else if ("list".equals(type)) {
+            size = jedis.llen(key);
+        } else if ("set".equals(type)) {
+            size = jedis.scard(key);
+        } else {
+            size = jedis.zcard(key);
+        }
 		return size;
 	}
 
@@ -247,10 +250,11 @@ public class RedisUtil {
 	}
 
 	public void setDeadLine(String key, int second) {
-		if (second != -1)
-			jedis.expire(key, second);
-		else
-			jedis.persist(key);
+		if (second != -1) {
+            jedis.expire(key, second);
+        } else {
+            jedis.persist(key);
+        }
 	}
 
 	public RedisUtil(Jedis jedis) {
@@ -271,6 +275,7 @@ public class RedisUtil {
 		}
 	}
 
+	@Override
 	public RedisUtil clone() {
 		Client client = jedis.getClient();
 		RedisUtil redisUtil = new RedisUtil(name, client.getHost(), client.getPort(), password);

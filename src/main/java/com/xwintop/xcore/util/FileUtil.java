@@ -50,7 +50,7 @@ public class FileUtil {
      * @param fileS
      * @return
      */
-    public static String FormetFileSize(long fileS) {// 转换文件大小
+    public static String formetFileSize(long fileS) {// 转换文件大小
         DecimalFormat df = new DecimalFormat("#.000");
         String fileSizeString = "";
         if (fileS < 1024) {

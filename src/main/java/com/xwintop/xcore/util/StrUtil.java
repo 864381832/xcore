@@ -13,7 +13,7 @@ public class StrUtil {
 			StringBuilder result = new StringBuilder();
 			String[] temp = str.split("_");
 			for (int i = 0; i < temp.length; i++) {
-				if (temp[i].equals("") || temp[i].isEmpty()) {
+				if ("".equals(temp[i]) || temp[i].isEmpty()) {
 					continue;
 				}
 				result.append(fristToUpCaseLaterToLoCase(temp[i]));
@@ -36,7 +36,7 @@ public class StrUtil {
 			String[] temp = str.split("_");
 			boolean falg = false;
 			for (int i = 0; i < temp.length; i++) {
-				if (temp[i].equals("") || temp[i].isEmpty()) {
+				if ("".equals(temp[i]) || temp[i].isEmpty()) {
 					continue;
 				}
 				if (falg == false) {
