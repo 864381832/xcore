@@ -116,7 +116,7 @@ public class FileChooserUtil {
                 new FileChooser.ExtensionFilter("JPG", "*.jpg"), new FileChooser.ExtensionFilter("PNG", "*.png"),
                 new FileChooser.ExtensionFilter("gif", "*.gif"), new FileChooser.ExtensionFilter("jpeg", "*.jpeg"),
                 new FileChooser.ExtensionFilter("bmp", "*.bmp"));
-        return chooseSaveFile(fileName, null);
+        return file;
     }
 
     /**
