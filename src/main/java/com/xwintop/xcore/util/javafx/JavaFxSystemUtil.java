@@ -1,5 +1,6 @@
 package com.xwintop.xcore.util.javafx;
 
+import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
@@ -8,6 +9,7 @@ import java.io.IOException;
 
 @Slf4j
 public class JavaFxSystemUtil {
+    public static Stage mainStage = null;
     /**
      * @param directoryPath 目录路径
      * @Description 打开目录
