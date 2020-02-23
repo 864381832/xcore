@@ -9,15 +9,11 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.*;
 import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory;
 import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.TextFieldListCell;
@@ -31,7 +27,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
@@ -40,7 +35,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 
-import java.awt.*;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -84,53 +78,43 @@ public class JavaFxViewUtil {
         return getJFXDecoratorScene(decorator);
     }
 
+    public static Scene getJFXDecoratorScene(Stage stage, String title, String iconUrl, Parent root, double width, double height) {
+        JFXDecorator decorator = getJFXDecorator(stage, title, iconUrl, root);
+        return getJFXDecoratorScene(decorator, width, height);
+    }
+
     /**
      * 获取JFoenix窗口
      *
      * @param decorator 显示的decorator面板
      */
     public static Scene getJFXDecoratorScene(JFXDecorator decorator) {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.width / 1.35;
-        double height = screenSize.height / 1.2;
-        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-        if (width > bounds.getWidth() || height > bounds.getHeight()) {//解决屏幕缩放问题
-            width = bounds.getWidth();
-            height = bounds.getHeight();
-        }
+        double[] screenSize = JavaFxSystemUtil.getScreenSizeByScale(0.74, 0.8);
+        return getJFXDecoratorScene(decorator, screenSize[0], screenSize[1]);
+    }
+
+    public static Scene getJFXDecoratorScene(JFXDecorator decorator, double width, double height) {
         Scene scene = new Scene(decorator, width, height);
         final ObservableList<String> stylesheets = scene.getStylesheets();
-        stylesheets.addAll(
-//                JavaFxViewUtil.class.getResource("/css/jfoenix-fonts.css").toExternalForm(),
-//                JavaFxViewUtil.class.getResource("/css/jfoenix-design.css").toExternalForm(),
-                JavaFxViewUtil.class.getResource("/css/jfoenix-main.css").toExternalForm());
+        stylesheets.addAll(JavaFxViewUtil.class.getResource("/css/jfoenix-main.css").toExternalForm());
         return scene;
     }
 
-    /*
+    /**
      * 获取新窗口
-     */
+     **/
     public static Stage getNewStage(String title, String iconUrl, Parent root) {
-        Stage newStage = new Stage();
-        newStage.setTitle(title);
+        double[] screenSize = JavaFxSystemUtil.getScreenSizeByScale(0.74, 0.8);
+        Stage newStage = getNewStageNull(title, iconUrl, root, screenSize[0],screenSize[1]);
         newStage.initModality(Modality.NONE);
-        newStage.setResizable(true);//可调整大小
-
-        if (StringUtils.isEmpty(iconUrl)) {
-            iconUrl = "/images/icon.jpg";
-        }
-        Scene scene = JavaFxViewUtil.getJFXDecoratorScene(newStage, title, iconUrl, root);
-        newStage.setScene(scene);
-//        newStage.setScene(new Scene(root));
 //		newStage.setMaximized(false);
-        newStage.getIcons().add(new Image(iconUrl));
         newStage.show();
         return newStage;
     }
 
-    /*
+    /**
      * 获取新窗口，并添加关闭回调事件
-     */
+     **/
     public static Stage getNewStage(String title, String iconUrl, FXMLLoader fXMLLoader) {
         Stage newStage = null;
         try {
@@ -146,14 +130,33 @@ public class JavaFxViewUtil {
 
     //打开一个等待窗口
     public static void openNewWindow(String title, Parent root) {
-        Stage window = new Stage();
-        window.setTitle(title);
-        window.initModality(Modality.APPLICATION_MODAL);
-        Scene scene = new Scene(root);
-        window.setScene(scene);
-        window.showAndWait();
+        double[] screenSize = JavaFxSystemUtil.getScreenSizeByScale(0.74, 0.8);
+        openNewWindow(title,null,root,screenSize[0],screenSize[1]);
     }
 
+    //打开一个等待窗口
+    public static void openNewWindow(String title, String iconUrl, Parent root, double width, double height) {
+        Stage newStage = getNewStageNull(title, iconUrl, root, width, height);
+        newStage.initModality(Modality.APPLICATION_MODAL);
+        newStage.showAndWait();
+    }
+
+    //获取一个新窗口
+    public static Stage getNewStageNull(String title, String iconUrl, Parent root, double width, double height) {
+        Stage newStage = new Stage();
+        newStage.setTitle(title);
+        newStage.setResizable(true);//可调整大小
+        if (StringUtils.isEmpty(iconUrl)) {
+            iconUrl = "/images/icon.jpg";
+        }
+        Scene scene = JavaFxViewUtil.getJFXDecoratorScene(newStage, title, iconUrl, root, width, height);
+        newStage.setScene(scene);
+        newStage.getIcons().add(new Image(iconUrl));
+        return newStage;
+    }
+
+
+    //在本地浏览器中打开一个地址（本地或者http地址）
     public static void openUrlOnWebView(String url, String title, String iconUrl) {
         WebView browser = new WebView();
         WebEngine webEngine = browser.getEngine();
@@ -306,7 +309,6 @@ public class JavaFxViewUtil {
      * @Title: setSpinnerValueFactory
      * @Description: 初始化表格属性
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public static void setTableColumnMapValueFactory(TableColumn tableColumn, String name) {
         setTableColumnMapValueFactory(tableColumn, name, true, null);
     }
@@ -367,7 +369,6 @@ public class JavaFxViewUtil {
      * @Title: setTableColumnMapValueFactoryAsChoiceBox
      * @Description: 初始化下拉选择表格属性
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public static void setTableColumnMapAsChoiceBoxValueFactory(TableColumn tableColumn, String name, String[] choiceBoxStrings) {
         tableColumn.setCellValueFactory(new MapValueFactory(name));
         tableColumn.setCellFactory(

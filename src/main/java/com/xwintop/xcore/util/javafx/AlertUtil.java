@@ -1,8 +1,12 @@
 package com.xwintop.xcore.util.javafx;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 
 import java.util.Optional;
 
@@ -13,16 +17,20 @@ public class AlertUtil {
      * @param message
      */
     public static void showInfoAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText(message);
-        alert.show();
+        showInfoAlert("提示", message);
     }
 
     public static void showInfoAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setContentText(message);
-        alert.show();
+        Label textArea = new Label(message);
+        textArea.setFont(Font.font(18));
+        TextFlow textFlow = new TextFlow(textArea);
+        textFlow.setTextAlignment(TextAlignment.CENTER);
+        textFlow.setPadding(new Insets(15, 15, 15, 15));
+        JavaFxViewUtil.openNewWindow(title, null, textFlow, textFlow.getPrefWidth(), textFlow.getPrefHeight());
+//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//        alert.setTitle(title);
+//        alert.setContentText(message);
+//        alert.show();
     }
 
     /**
