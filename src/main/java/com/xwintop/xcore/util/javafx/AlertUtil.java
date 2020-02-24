@@ -1,14 +1,19 @@
 package com.xwintop.xcore.util.javafx;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AlertUtil {
     /**
@@ -26,7 +31,7 @@ public class AlertUtil {
         TextFlow textFlow = new TextFlow(textArea);
         textFlow.setTextAlignment(TextAlignment.CENTER);
         textFlow.setPadding(new Insets(15, 15, 15, 15));
-        JavaFxViewUtil.openNewWindow(title, null, textFlow, textFlow.getPrefWidth(), textFlow.getPrefHeight());
+        JavaFxViewUtil.openNewWindow(title, null, textFlow, textFlow.getPrefWidth(), textFlow.getPrefHeight(), false, false, false);
 //        Alert alert = new Alert(Alert.AlertType.INFORMATION);
 //        alert.setTitle(title);
 //        alert.setContentText(message);
@@ -35,9 +40,8 @@ public class AlertUtil {
 
     /**
      * 等待信息提示框
-     *
-     * @param message
      */
+    @Deprecated
     public static void showAndWaitInfoAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(message);
@@ -46,20 +50,16 @@ public class AlertUtil {
 
     /**
      * 注意提示框
-     *
-     * @param message
      */
+    @Deprecated
     public static void showWarnAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setContentText(message);
-        alert.show();
+        showInfoAlert("警告", message);
     }
 
     /**
      * 异常提示框
-     *
-     * @param message
      */
+    @Deprecated
     public static void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setContentText(message);
@@ -72,14 +72,32 @@ public class AlertUtil {
      * @param message
      */
     public static boolean showConfirmAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setContentText(message);
-        Optional<ButtonType> optional = alert.showAndWait();
-        if (ButtonType.OK == optional.get()) {
-            return true;
-        } else {
-            return false;
-        }
+        VBox vBox = new VBox(15);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setPadding(new Insets(15, 15, 15, 15));
+        Label textArea = new Label(message);
+        textArea.setFont(Font.font(18));
+        vBox.getChildren().add(textArea);
+        Button button = new Button("确定");
+        button.setFont(new Font(16));
+        vBox.getChildren().add(button);
+        Stage newStage = JavaFxViewUtil.getNewStageNull("提示", null, vBox, -1, -1, false, false, false);
+        newStage.initModality(Modality.APPLICATION_MODAL);
+        AtomicBoolean isOk = new AtomicBoolean(false);
+        button.setOnMouseClicked(event -> {
+            isOk.set(true);
+            newStage.close();
+        });
+        newStage.showAndWait();
+        return isOk.get();
+//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+//        alert.setContentText(message);
+//        Optional<ButtonType> optional = alert.showAndWait();
+//        if (ButtonType.OK == optional.get()) {
+//            return true;
+//        } else {
+//            return false;
+//        }
     }
 
     @Deprecated
