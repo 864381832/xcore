@@ -1,11 +1,12 @@
-package com.xwintop.xcore;
+package com.xwintop.xcore.javafx;
 
-import static com.xwintop.xcore.util.javafx.FxBuilders.icon;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.image.Image;
-import javafx.stage.Stage;
+
+import static com.xwintop.xcore.javafx.helper.LayoutHelper.icon;
 
 /**
  * 用于存储 App 全局的相关属性

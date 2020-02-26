@@ -1,14 +1,9 @@
-package com.xwintop.xcore.dialog;
+package com.xwintop.xcore.javafx.dialog;
 
-import com.xwintop.xcore.FxApp;
 import com.xwintop.xcore.XCoreException;
+import com.xwintop.xcore.javafx.FxApp;
 import com.xwintop.xcore.util.javafx.FxmlUtil;
 import com.xwintop.xcore.util.javafx.JavaFxViewUtil;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -22,6 +17,12 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 自定义对话框

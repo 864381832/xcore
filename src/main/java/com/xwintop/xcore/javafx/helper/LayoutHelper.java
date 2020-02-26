@@ -1,7 +1,6 @@
-package com.xwintop.xcore.util.javafx;
+package com.xwintop.xcore.javafx.helper;
 
 import com.xwintop.xcore.XCoreException;
-import java.net.URL;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -11,10 +10,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
+import java.net.URL;
+
 /**
  * 用于快速创建一些 Node 对象
  */
-public class FxBuilders {
+public class LayoutHelper {
 
     public static TextField textField(String text, double prefWidth) {
         TextField textField = new TextField(text);
@@ -50,7 +51,7 @@ public class FxBuilders {
     }
 
     public static Image icon(String resourcePath) {
-        URL resource = FxBuilders.class.getResource(resourcePath);
+        URL resource = LayoutHelper.class.getResource(resourcePath);
         if (resource == null) {
             throw new XCoreException("Resource '" + resourcePath + "' not found.");
         }

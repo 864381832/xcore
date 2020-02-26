@@ -1,7 +1,7 @@
-package com.xwintop.xcore.dialog;
+package com.xwintop.xcore.javafx.dialog;
 
-import com.xwintop.xcore.FxApp;
-import com.xwintop.xcore.util.javafx.FxBuilders;
+import com.xwintop.xcore.javafx.FxApp;
+import com.xwintop.xcore.javafx.helper.LayoutHelper;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonType;
@@ -19,9 +19,9 @@ public class FxDialogTest extends Application {
         FxApp.init(primaryStage, "/icon.png");
 
         primaryStage.setScene(new Scene(new BorderPane(
-            FxBuilders.vbox(10, 10,
-                FxBuilders.button("Open Dialog", () -> openDialog(primaryStage)),
-                FxBuilders.button("Open Dialog2", () -> openDialog2(primaryStage))
+            LayoutHelper.vbox(10, 10,
+                LayoutHelper.button("Open Dialog", () -> openDialog(primaryStage)),
+                LayoutHelper.button("Open Dialog2", () -> openDialog2(primaryStage))
             )
         ), 400, 300));
         primaryStage.show();

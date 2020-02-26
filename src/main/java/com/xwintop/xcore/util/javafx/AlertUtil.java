@@ -1,13 +1,14 @@
 package com.xwintop.xcore.util.javafx;
 
-import static com.xwintop.xcore.util.javafx.FxBuilders.label;
-import static com.xwintop.xcore.util.javafx.FxBuilders.vbox;
-
-import com.xwintop.xcore.FxApp;
-import com.xwintop.xcore.dialog.FxDialog;
+import com.xwintop.xcore.javafx.FxApp;
+import com.xwintop.xcore.javafx.dialog.FxDialog;
+import com.xwintop.xcore.javafx.helper.LayoutHelper;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+
+import static com.xwintop.xcore.javafx.helper.LayoutHelper.label;
+import static com.xwintop.xcore.javafx.helper.LayoutHelper.vbox;
 
 public class AlertUtil {
 
@@ -98,7 +99,7 @@ public class AlertUtil {
     public static String showInputAlertDefaultValue(String message, String defaultValue) {
         String[] result = new String[]{defaultValue};
 
-        TextField textField = FxBuilders.textField(defaultValue, 200);
+        TextField textField = LayoutHelper.textField(defaultValue, 200);
         VBox body = vbox(10, 10, label(message, 300), textField);
 
         new FxDialog<>(FxApp.primaryStage, body, "提示", ButtonType.OK, ButtonType.CANCEL)

@@ -1,14 +1,14 @@
 package com.xwintop.xcore.util.javafx;
 
-import static com.xwintop.xcore.util.javafx.AlertUtil.*;
-import static com.xwintop.xcore.util.javafx.FxBuilders.button;
-import static com.xwintop.xcore.util.javafx.FxBuilders.vbox;
-
-import com.xwintop.xcore.FxApp;
+import com.xwintop.xcore.javafx.FxApp;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+
+import static com.xwintop.xcore.javafx.helper.LayoutHelper.button;
+import static com.xwintop.xcore.javafx.helper.LayoutHelper.vbox;
+import static com.xwintop.xcore.util.javafx.AlertUtil.*;
 
 public class AlertUtilTest extends Application {
 

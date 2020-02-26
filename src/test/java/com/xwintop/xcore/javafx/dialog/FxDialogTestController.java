@@ -1,4 +1,4 @@
-package com.xwintop.xcore.dialog;
+package com.xwintop.xcore.javafx.dialog;
 
 import javafx.scene.control.TextField;
 
