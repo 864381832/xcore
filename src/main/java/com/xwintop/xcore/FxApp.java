@@ -2,6 +2,8 @@ package com.xwintop.xcore;
 
 import static com.xwintop.xcore.util.javafx.FxBuilders.icon;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -15,6 +17,9 @@ public class FxApp {
 
     // 获得 App 图标，用于主窗体和对话框上
     public static Image appIcon;
+
+    // 获得全局 CSS，用于主窗体和对话框上
+    public static final List<String> styleSheets = new ArrayList<>();
 
     // 初始化全局属性
     public static void init(Stage primaryStage, String iconPath) {

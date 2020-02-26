@@ -5,6 +5,7 @@ import static com.xwintop.xcore.util.javafx.FxBuilders.iconView;
 import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.lang.Singleton;
 import com.jfoenix.controls.JFXDecorator;
+import com.xwintop.xcore.FxApp;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -109,7 +110,10 @@ public class JavaFxViewUtil {
             decorator.setGraphic(iconView(icon, 16));
         }
 
-        newStage.setScene(new Scene(decorator));
+        Scene scene = new Scene(decorator);
+        scene.getStylesheets().addAll(FxApp.styleSheets);
+
+        newStage.setScene(scene);
         return newStage;
     }
 
