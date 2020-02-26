@@ -1,103 +1,58 @@
 package com.xwintop.xcore.util.javafx;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import static com.xwintop.xcore.util.javafx.FxBuilders.label;
+import static com.xwintop.xcore.util.javafx.FxBuilders.vbox;
+
+import com.xwintop.xcore.FxApp;
+import com.xwintop.xcore.dialog.FxDialog;
+import java.util.Optional;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextFlow;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AlertUtil {
+
     /**
      * 信息提示框
-     *
-     * @param message
      */
     public static void showInfoAlert(String message) {
         showInfoAlert("提示", message);
     }
 
     public static void showInfoAlert(String title, String message) {
-        Label textArea = new Label(message);
-        textArea.setFont(Font.font(18));
-        TextFlow textFlow = new TextFlow(textArea);
-        textFlow.setTextAlignment(TextAlignment.CENTER);
-        textFlow.setPadding(new Insets(15, 15, 15, 15));
-        JavaFxViewUtil.openNewWindow(title, null, textFlow, textFlow.getPrefWidth(), textFlow.getPrefHeight(), false, false, false);
-//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//        alert.setTitle(title);
-//        alert.setContentText(message);
-//        alert.show();
-    }
-
-    /**
-     * 等待信息提示框
-     */
-    @Deprecated
-    public static void showAndWaitInfoAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    /**
-     * 注意提示框
-     */
-    @Deprecated
-    public static void showWarnAlert(String message) {
-        showInfoAlert("警告", message);
-    }
-
-    /**
-     * 异常提示框
-     */
-    @Deprecated
-    public static void showErrorAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setContentText(message);
-        alert.show();
+        new FxDialog<>(
+            FxApp.primaryStage, vbox(10, 0, label(message)), title
+        ).showAndWait();
     }
 
     /**
      * 确定提示框
-     *
-     * @param message
      */
     public static boolean showConfirmAlert(String message) {
-        VBox vBox = new VBox(15);
-        vBox.setAlignment(Pos.CENTER);
-        vBox.setPadding(new Insets(15, 15, 15, 15));
-        Label textArea = new Label(message);
-        textArea.setFont(Font.font(18));
-        vBox.getChildren().add(textArea);
-        Button button = new Button("确定");
-        button.setFont(new Font(16));
-        vBox.getChildren().add(button);
-        Stage newStage = JavaFxViewUtil.getNewStageNull("提示", null, vBox, -1, -1, false, false, false);
-        newStage.initModality(Modality.APPLICATION_MODAL);
-        AtomicBoolean isOk = new AtomicBoolean(false);
-        button.setOnMouseClicked(event -> {
-            isOk.set(true);
-            newStage.close();
+
+        FxDialog<Object> dialog = new FxDialog<>(
+            FxApp.primaryStage, vbox(10, 0, label(message)), "提示",
+            ButtonType.YES, ButtonType.NO
+        );
+
+        Boolean[] result = new Boolean[]{false};
+
+        dialog.setButtonHandler(ButtonType.YES, (actionEvent, stage) -> {
+            result[0] = true;
+            stage.close();
         });
-        newStage.showAndWait();
-        return isOk.get();
-//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-//        alert.setContentText(message);
-//        Optional<ButtonType> optional = alert.showAndWait();
-//        if (ButtonType.OK == optional.get()) {
-//            return true;
-//        } else {
-//            return false;
-//        }
+        dialog.setButtonHandler(ButtonType.NO, (actionEvent, stage) -> {
+            result[0] = false;
+            stage.close();
+        });
+
+        dialog.showAndWait();
+        return result[0];
     }
 
     @Deprecated
@@ -111,21 +66,20 @@ public class AlertUtil {
     }
 
     public static String showInputAlertDefaultValue(String message, String defaultValue) {
-        TextField textField = new TextField();
-        textField.setText(defaultValue);
-        textField.setMinWidth(100);
-        textField.prefColumnCountProperty().bind(textField.textProperty().length());
-        Alert alert = new Alert(Alert.AlertType.NONE, null, new ButtonType("取消", ButtonBar.ButtonData.NO),
-                new ButtonType("确定", ButtonBar.ButtonData.YES));
-        alert.setTitle(message);
-        alert.setGraphic(textField);
-        alert.setWidth(200);
-        Optional<ButtonType> _buttonType = alert.showAndWait();
-        // 根据点击结果返回
-        if (_buttonType.get().getButtonData().equals(ButtonBar.ButtonData.YES)) {
-            return textField.getText();
-        }
-        return null;
+        String[] result = new String[]{defaultValue};
+
+        TextField textField = FxBuilders.textField(defaultValue, 200);
+        VBox body = vbox(10, 10, label(message, 300), textField);
+
+        new FxDialog<>(FxApp.primaryStage, body, "提示", ButtonType.OK, ButtonType.CANCEL)
+            .setButtonHandler(ButtonType.OK, (actionEvent, stage) -> {
+                result[0] = textField.getText();
+                stage.close();
+            })
+            .setButtonHandler(ButtonType.CANCEL, (actionEvent, stage) -> stage.close())
+            .showAndWait();
+
+        return result[0];
     }
 
     public static String[] showInputAlertMore(String message, String... names) {
@@ -150,7 +104,7 @@ public class AlertUtil {
         }
 
         Alert alert = new Alert(Alert.AlertType.NONE, null, new ButtonType("取消", ButtonBar.ButtonData.NO),
-                new ButtonType("确定", ButtonBar.ButtonData.YES));
+            new ButtonType("确定", ButtonBar.ButtonData.YES));
         alert.setTitle(message);
         alert.setGraphic(page1Grid);
         alert.setWidth(200);

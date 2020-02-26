@@ -1,9 +1,12 @@
 package com.xwintop.xcore.util.javafx;
 
+import static com.xwintop.xcore.util.javafx.FxBuilders.iconView;
+
 import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.lang.Singleton;
 import com.jfoenix.controls.JFXDecorator;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,7 +66,7 @@ public class JavaFxViewUtil {
      *
      * @param owner            父窗体
      * @param title            标题
-     * @param iconUrl          图标URL（可选）
+     * @param icon             图标（可选）
      * @param root             对话框内容
      * @param fullScreenButton 是否显示全屏按钮
      * @param maximizeButton   是否显示最大化按钮
@@ -72,15 +75,15 @@ public class JavaFxViewUtil {
      * @return 新建的窗体对象
      */
     public static Stage jfxStage(
-        Stage owner, String title, String iconUrl, Parent root,
+        Stage owner, String title, Image icon, Parent root,
         boolean fullScreenButton, boolean maximizeButton, boolean minimizeButton
     ) {
         Stage newStage = new Stage();
         newStage.setTitle(title);
         newStage.setResizable(true);
 
-        if (iconUrl != null) {
-            newStage.getIcons().add(new Image(iconUrl));
+        if (icon != null) {
+            newStage.getIcons().add(icon);
         }
 
         if (owner != null) {
@@ -102,11 +105,8 @@ public class JavaFxViewUtil {
         decorator.setCustomMaximize(true);
         decorator.setTitle(title);
 
-        if (StringUtils.isNotEmpty(iconUrl)) {
-            ImageView imageView = new ImageView(new Image(iconUrl));
-            imageView.setFitWidth(24);
-            imageView.setFitHeight(24);
-            decorator.setGraphic(imageView);
+        if (icon != null) {
+            decorator.setGraphic(iconView(icon, 16));
         }
 
         newStage.setScene(new Scene(decorator));
@@ -176,7 +176,10 @@ public class JavaFxViewUtil {
     public static Scene getJFXDecoratorScene(JFXDecorator decorator, double width, double height) {
         Scene scene = new Scene(decorator, width, height);
         final ObservableList<String> stylesheets = scene.getStylesheets();
-        stylesheets.addAll(JavaFxViewUtil.class.getResource("/css/jfoenix-main.css").toExternalForm());
+        URL cssUrl = JavaFxViewUtil.class.getResource("/css/jfoenix-main.css");
+        if (cssUrl != null) {
+            stylesheets.addAll(cssUrl.toExternalForm());
+        }
         return scene;
     }
 
@@ -228,13 +231,12 @@ public class JavaFxViewUtil {
         Stage newStage = new Stage();
         newStage.setTitle(title);
         newStage.setResizable(true);//可调整大小
-        if (StringUtils.isEmpty(iconUrl)) {
-            iconUrl = "/images/icon.jpg";
-        }
         Scene scene = JavaFxViewUtil
             .getJFXDecoratorScene(newStage, title, iconUrl, root, width, height, fullScreen, max, min);
         newStage.setScene(scene);
-        newStage.getIcons().add(new Image(iconUrl));
+        if (StringUtils.isNotEmpty(iconUrl)) {
+            newStage.getIcons().add(new Image(iconUrl));
+        }
         return newStage;
     }
 

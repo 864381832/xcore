@@ -1,5 +1,7 @@
 package com.xwintop.xcore.dialog;
 
+import com.xwintop.xcore.FxApp;
+import com.xwintop.xcore.XCoreException;
 import com.xwintop.xcore.util.javafx.FxmlUtil;
 import com.xwintop.xcore.util.javafx.JavaFxViewUtil;
 import java.util.HashMap;
@@ -19,9 +21,11 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * 自定义对话框
+ *
  * @param <T> 对话框的 Controller 类型
  */
 public class FxDialog<T> {
@@ -30,6 +34,8 @@ public class FxDialog<T> {
 
     private String bodyFxmlPath;
 
+    private Parent body;
+
     private String title;
 
     private ButtonType[] buttonTypes;
@@ -37,35 +43,86 @@ public class FxDialog<T> {
     private Map<ButtonType, BiConsumer<ActionEvent, Stage>> buttonHandlers = new HashMap<>();
 
     public FxDialog(Stage owner, String bodyFxmlPath, String title, ButtonType... buttonTypes) {
+        this(owner, bodyFxmlPath, null, title, buttonTypes);
+    }
+
+    public FxDialog(Stage owner, Parent body, String title, ButtonType... buttonTypes) {
+        this(owner, null, body, title, buttonTypes);
+    }
+
+    public FxDialog(Stage owner, String bodyFxmlPath, String title) {
+        this(owner, bodyFxmlPath, null, title);
+    }
+
+    public FxDialog(Stage owner, Parent body, String title) {
+        this(owner, null, body, title);
+    }
+
+    public FxDialog(
+        Stage owner, String bodyFxmlPath, Parent body,
+        String title, ButtonType... buttonTypes
+    ) {
         this.owner = owner;
         this.bodyFxmlPath = bodyFxmlPath;
+        this.body = body;
         this.title = title;
         this.buttonTypes = buttonTypes;
     }
 
-    public void setButtonHandler(ButtonType buttonType, BiConsumer<ActionEvent, Stage> buttonHandler) {
+    public FxDialog<T> setButtonHandler(ButtonType buttonType, BiConsumer<ActionEvent, Stage> buttonHandler) {
         this.buttonHandlers.put(buttonType, buttonHandler);
+        return this;
     }
 
     public T show() {
-        FXMLLoader fxmlLoader = FxmlUtil.loadFxmlFromResource(this.bodyFxmlPath);
-        Stage stage = createStage(fxmlLoader.getRoot());
-        stage.show();
-        return fxmlLoader.getController();
+        if (this.bodyFxmlPath != null) {
+            FXMLLoader fxmlLoader = FxmlUtil.loadFxmlFromResource(this.bodyFxmlPath);
+            Stage stage = createStage(fxmlLoader.getRoot());
+            stage.show();
+            return fxmlLoader.getController();
+        }
+
+        if (this.body != null) {
+            Stage stage = createStage(this.body);
+            stage.show();
+            return null;
+        }
+
+        throw new XCoreException("bodyFxmlPath 和 body 不能都为空");
+    }
+
+    public T showAndWait() {
+        if (this.bodyFxmlPath != null) {
+            FXMLLoader fxmlLoader = FxmlUtil.loadFxmlFromResource(this.bodyFxmlPath);
+            Stage stage = createStage(fxmlLoader.getRoot());
+            stage.showAndWait();
+            return fxmlLoader.getController();
+        }
+
+        if (this.body != null) {
+            Stage stage = createStage(this.body);
+            stage.showAndWait();
+            return null;
+        }
+
+        throw new XCoreException("bodyFxmlPath 和 body 不能都为空");
     }
 
     private Stage createStage(Parent content) {
-        VBox dialogContainer = new VBox(content, new Separator());
+        VBox dialogContainer = new VBox(content);
         VBox.setVgrow(content, Priority.ALWAYS);
 
         dialogContainer.setPadding(new Insets(5));
         dialogContainer.setSpacing(5);
 
         Stage stage = JavaFxViewUtil.jfxStage(
-            this.owner, this.title, null, dialogContainer, false, true, true
+            this.owner, this.title, FxApp.appIcon, dialogContainer, false, true, true
         );
 
-        dialogContainer.getChildren().add(buttonsPanel(stage));
+        if (ArrayUtils.isNotEmpty(this.buttonTypes)) {
+            dialogContainer.getChildren().add(new Separator());
+            dialogContainer.getChildren().add(buttonsPanel(stage));
+        }
         return stage;
     }
 
