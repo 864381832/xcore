@@ -7,6 +7,7 @@ import static com.xwintop.xcore.util.javafx.FxBuilders.vbox;
 import com.xwintop.xcore.FxApp;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 public class AlertUtilTest extends Application {
@@ -21,7 +22,9 @@ public class AlertUtilTest extends Application {
         primaryStage.setScene(new Scene(
             vbox(10, 10,
                 button("打开 info 对话框", this::alertInfo),
-                button("打开 confirm 对话框", this::alertConfirm),
+                button("打开 confirm 对话框(是/否)", this::alertConfirm),
+                button("打开 confirm 对话框(确定/取消)", this::alertConfirm2),
+                button("打开 confirm 对话框(是/否/取消)", this::alertConfirm3),
                 button("打开 input 对话框", this::alertInput)
             ),
             400, 300
@@ -39,11 +42,24 @@ public class AlertUtilTest extends Application {
     }
 
     private void alertConfirm() {
-        if (showConfirmAlert("黑白橘子能有黑白桃子那么中二么？？")) {
+        if (confirmYesNo("确认", "黑白橘子能有黑白桃子那么中二么？？")) {
             showInfoAlert("你选择了是。");
         } else {
             showInfoAlert("你选择了否。");
         }
+    }
+
+    private void alertConfirm2() {
+        if (confirmOkCancel("确认", "黑白橘子能有黑白桃子那么中二么？？")) {
+            showInfoAlert("你选择了确定。");
+        } else {
+            showInfoAlert("你选择了取消。");
+        }
+    }
+
+    private void alertConfirm3() {
+        ButtonType buttonType = confirmYesNoCancel("确认", "黑白橘子能有黑白桃子那么中二么？？");
+        showInfoAlert("你选择了" + buttonType.getText() + "。");
     }
 
     private void alertInfo() {
