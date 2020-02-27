@@ -11,7 +11,7 @@
   <center>
     <HBox alignment="BASELINE_LEFT" spacing="10">
       <Label text="Size: "/>
-      <IntegerSpinner fx:id="sizeSpinner"
+      <IntegerSpinner fx:id="sizeSpinner" editable="true"
                       min="-1000" max="1000" amountToStepBy="10" initialValue="100"/>
     </HBox>
   </center>
