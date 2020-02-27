@@ -22,6 +22,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
@@ -160,6 +161,7 @@ public class FxDialog<T> {
             if (this.owner != null) {
                 stage.initOwner(this.owner);
                 stage.initModality(Modality.WINDOW_MODAL);
+                adjustPosition(stage, owner);
             } else {
                 stage.initModality(Modality.APPLICATION_MODAL);
             }
@@ -199,5 +201,12 @@ public class FxDialog<T> {
             }
         });
         return button;
+    }
+
+    private void adjustPosition(Stage dialog, Stage owner) {
+        dialog.addEventHandler(WindowEvent.WINDOW_SHOWN, event -> {
+            dialog.setX(Math.max(0, owner.getX() + owner.getWidth() / 2 - dialog.getWidth() / 2));
+            dialog.setY(Math.max(0, owner.getY() + owner.getHeight() / 2 - dialog.getHeight() / 2));
+        });
     }
 }

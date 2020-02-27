@@ -49,7 +49,7 @@ public class FxApp {
     }
 
     // 给窗体设置 owner
-    public static void setupModality(Dialog stage) {
+    public static void setupModality(Dialog<?> stage) {
         if (FxApp.primaryStage != null) {
             stage.initOwner(FxApp.primaryStage);
             stage.initModality(Modality.WINDOW_MODAL);

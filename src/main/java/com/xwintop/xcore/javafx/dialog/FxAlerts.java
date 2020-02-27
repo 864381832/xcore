@@ -8,14 +8,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 /**
  * 系统对话框封装
  */
-@Slf4j
 public class FxAlerts {
 
     public static void error(String message) {
@@ -53,7 +51,7 @@ public class FxAlerts {
 
                 alert.showAndWait();
             } catch (Exception e) {
-                log.error("打开对话框失败", e);
+                e.printStackTrace();
             }
         });
     }
@@ -118,7 +116,7 @@ public class FxAlerts {
             Optional<ButtonType> result = alert.showAndWait();
             return result.orElse(ButtonType.CANCEL);
         } catch (Exception e) {
-            log.error("打开对话框失败", e);
+            e.printStackTrace();
             return ButtonType.CANCEL;
         }
     }
