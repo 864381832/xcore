@@ -1,16 +1,19 @@
 package com.xwintop.xcore.util.javafx;
 
+import static com.xwintop.xcore.javafx.helper.LayoutHelper.label;
+import static com.xwintop.xcore.javafx.helper.LayoutHelper.vbox;
+
 import com.xwintop.xcore.javafx.FxApp;
 import com.xwintop.xcore.javafx.dialog.FxDialog;
 import com.xwintop.xcore.javafx.helper.LayoutHelper;
+import javafx.geometry.Pos;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-import static com.xwintop.xcore.javafx.helper.LayoutHelper.label;
-import static com.xwintop.xcore.javafx.helper.LayoutHelper.vbox;
-
 public class AlertUtil {
+
+    public static final int LABEL_MAX_WIDTH = 300;
 
     /**
      * 信息提示框
@@ -23,9 +26,13 @@ public class AlertUtil {
      * 信息提示框
      */
     public static void showInfoAlert(String title, String message) {
-        new FxDialog<>(
-            FxApp.primaryStage, vbox(10, 0, label(message)), title
-        ).showAndWait();
+        new FxDialog<>()
+            .setOwner(FxApp.primaryStage)
+            .setTitle(title)
+            .setBody(vbox(20, 0, Pos.CENTER, label(message, LABEL_MAX_WIDTH)))
+            .setButtonTypes(ButtonType.OK)
+            .setButtonHandler(ButtonType.OK, (actionEvent, stage) -> stage.close())
+            .showAndWait();
     }
 
     /**
@@ -67,10 +74,11 @@ public class AlertUtil {
         }
 
         // 构造对话框
-        FxDialog<Object> dialog = new FxDialog<>(
-            FxApp.primaryStage, vbox(10, 0, label(message)), title,
-            buttonTypes
-        );
+        FxDialog<Object> dialog = new FxDialog<>()
+            .setTitle(title)
+            .setButtonTypes(buttonTypes)
+            .setOwner(FxApp.primaryStage)
+            .setBody(vbox(10, 0, label(message)));
 
         ButtonType[] result = new ButtonType[]{ButtonType.CANCEL};
 
@@ -94,15 +102,19 @@ public class AlertUtil {
     }
 
     /**
-     * 输入提示框
+     * 输入提示框，如果点击确定则返回文本框内容，点击取消或关闭则返回 null
      */
     public static String showInputAlertDefaultValue(String message, String defaultValue) {
-        String[] result = new String[]{defaultValue};
+        String[] result = new String[]{null};
 
         TextField textField = LayoutHelper.textField(defaultValue, 200);
-        VBox body = vbox(10, 10, label(message, 300), textField);
+        VBox body = vbox(10, 10, label(message, LABEL_MAX_WIDTH), textField);
 
-        new FxDialog<>(FxApp.primaryStage, body, "提示", ButtonType.OK, ButtonType.CANCEL)
+        new FxDialog<>()
+            .setOwner(FxApp.primaryStage)
+            .setBody(body)
+            .setTitle("提示")
+            .setButtonTypes(ButtonType.OK, ButtonType.CANCEL)
             .setButtonHandler(ButtonType.OK, (actionEvent, stage) -> {
                 result[0] = textField.getText();
                 stage.close();

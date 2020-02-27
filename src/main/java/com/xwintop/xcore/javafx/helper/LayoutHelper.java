@@ -1,7 +1,9 @@
 package com.xwintop.xcore.javafx.helper;
 
 import com.xwintop.xcore.XCoreException;
+import java.net.URL;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,8 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-
-import java.net.URL;
 
 /**
  * 用于快速创建一些 Node 对象
@@ -38,10 +38,17 @@ public class LayoutHelper {
         return label;
     }
 
-    public static VBox vbox(double padding, double spacing, Node... children) {
+    public static VBox vbox(double padding, double spacing, Pos alignment, Node... children) {
         VBox vBox = new VBox(spacing, children);
         vBox.setPadding(new Insets(padding));
+        if (alignment != null) {
+            vBox.setAlignment(alignment);
+        }
         return vBox;
+    }
+
+    public static VBox vbox(double padding, double spacing, Node... children) {
+        return vbox(padding, spacing, null, children);
     }
 
     public static Button button(String text, Runnable action) {

@@ -20,8 +20,8 @@ public class FxDialogTest extends Application {
 
         primaryStage.setScene(new Scene(new BorderPane(
             LayoutHelper.vbox(10, 10,
-                LayoutHelper.button("Open Dialog", () -> openDialog(primaryStage)),
-                LayoutHelper.button("Open Dialog2", () -> openDialog2(primaryStage))
+                LayoutHelper.button("打开带按钮的对话框", () -> openDialog(primaryStage)),
+                LayoutHelper.button("打开不带按钮的对话框", () -> openDialog2(primaryStage))
             )
         ), 400, 300));
         primaryStage.show();
@@ -30,12 +30,11 @@ public class FxDialogTest extends Application {
     private void openDialog(Stage primaryStage) {
 
         // 创建对话框
-        FxDialog<FxDialogTestController> dialog = new FxDialog<>(
-            primaryStage,
-            "/sample-dialog-body.fxml",
-            "对话框标题",
-            ButtonType.OK, ButtonType.CANCEL
-        );
+        FxDialog<FxDialogTestController> dialog = new FxDialog<FxDialogTestController>()
+            .setOwner(primaryStage)
+            .setBodyFxml("/sample-dialog-body.fxml")
+            .setTitle("对话框标题")
+            .setButtonTypes(ButtonType.OK, ButtonType.CANCEL);
 
         // 通过 Controller 对象初始化对话框内容
         FxDialogTestController controller = dialog.show();
@@ -56,11 +55,10 @@ public class FxDialogTest extends Application {
     private void openDialog2(Stage primaryStage) {
 
         // 创建不带按钮的对话框
-        FxDialog<FxDialogTestController> dialog = new FxDialog<>(
-            primaryStage,
-            "/sample-dialog-body.fxml",
-            "对话框标题"
-        );
+        FxDialog<FxDialogTestController> dialog = new FxDialog<FxDialogTestController>()
+            .setOwner(primaryStage)
+            .setBodyFxml("/sample-dialog-body.fxml")
+            .setTitle("对话框标题");
 
         // 通过 Controller 对象初始化对话框内容
         FxDialogTestController controller = dialog.show();

@@ -3,11 +3,16 @@ package com.xwintop.xcore.javafx.dialog;
 import com.xwintop.xcore.XCoreException;
 import com.xwintop.xcore.javafx.FxApp;
 import com.xwintop.xcore.util.javafx.FxmlUtil;
-import com.xwintop.xcore.util.javafx.JavaFxViewUtil;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -15,14 +20,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.ArrayUtils;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * 自定义对话框
@@ -30,6 +30,14 @@ import java.util.stream.Stream;
  * @param <T> 对话框的 Controller 类型
  */
 public class FxDialog<T> {
+
+    private boolean modal = true;
+
+    private boolean resizable = false;
+
+    private double prefWidth;
+
+    private double prefHeight;
 
     private Stage owner;
 
@@ -43,31 +51,49 @@ public class FxDialog<T> {
 
     private Map<ButtonType, BiConsumer<ActionEvent, Stage>> buttonHandlers = new HashMap<>();
 
-    public FxDialog(Stage owner, String bodyFxmlPath, String title, ButtonType... buttonTypes) {
-        this(owner, bodyFxmlPath, null, title, buttonTypes);
+    public FxDialog<T> setResizable(boolean resizable) {
+        this.resizable = resizable;
+        return this;
     }
 
-    public FxDialog(Stage owner, Parent body, String title, ButtonType... buttonTypes) {
-        this(owner, null, body, title, buttonTypes);
+    public FxDialog<T> setPrefHeight(double prefHeight) {
+        this.prefHeight = prefHeight;
+        return this;
     }
 
-    public FxDialog(Stage owner, String bodyFxmlPath, String title) {
-        this(owner, bodyFxmlPath, null, title);
+    public FxDialog<T> setPrefWidth(double prefWidth) {
+        this.prefWidth = prefWidth;
+        return this;
     }
 
-    public FxDialog(Stage owner, Parent body, String title) {
-        this(owner, null, body, title);
-    }
-
-    public FxDialog(
-        Stage owner, String bodyFxmlPath, Parent body,
-        String title, ButtonType... buttonTypes
-    ) {
-        this.owner = owner;
-        this.bodyFxmlPath = bodyFxmlPath;
-        this.body = body;
+    public FxDialog<T> setTitle(String title) {
         this.title = title;
+        return this;
+    }
+
+    public FxDialog<T> setOwner(Stage owner) {
+        this.owner = owner;
+        return this;
+    }
+
+    public FxDialog<T> setBody(Parent body) {
+        this.body = body;
+        return this;
+    }
+
+    public FxDialog<T> setBodyFxml(String bodyFxmlPath) {
+        this.bodyFxmlPath = bodyFxmlPath;
+        return this;
+    }
+
+    public FxDialog<T> setButtonTypes(ButtonType... buttonTypes) {
         this.buttonTypes = buttonTypes;
+        return this;
+    }
+
+    public FxDialog<T> setModal(boolean modal) {
+        this.modal = modal;
+        return this;
     }
 
     public FxDialog<T> setButtonHandler(ButtonType buttonType, BiConsumer<ActionEvent, Stage> buttonHandler) {
@@ -116,14 +142,37 @@ public class FxDialog<T> {
         dialogContainer.setPadding(new Insets(5));
         dialogContainer.setSpacing(5);
 
-        Stage stage = JavaFxViewUtil.jfxStage(
-            this.owner, this.title, FxApp.appIcon, dialogContainer, false, true, true
-        );
-
+        Stage stage = new Stage();
         if (ArrayUtils.isNotEmpty(this.buttonTypes)) {
             dialogContainer.getChildren().add(new Separator());
             dialogContainer.getChildren().add(buttonsPanel(stage));
         }
+
+        stage.setTitle(title);
+        stage.setScene(new Scene(dialogContainer));
+        stage.setResizable(this.resizable);
+
+        if (FxApp.appIcon != null) {
+            stage.getIcons().add(FxApp.appIcon);
+        }
+
+        if (this.modal) {
+            if (this.owner != null) {
+                stage.initOwner(this.owner);
+                stage.initModality(Modality.WINDOW_MODAL);
+            } else {
+                stage.initModality(Modality.APPLICATION_MODAL);
+            }
+        }
+
+        if (this.prefWidth > 0) {
+            stage.setWidth(this.prefWidth);
+        }
+
+        if (this.prefHeight > 0) {
+            stage.setHeight(this.prefHeight);
+        }
+
         return stage;
     }
 
