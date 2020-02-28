@@ -2,6 +2,7 @@ package com.xwintop.xcore.javafx;
 
 import static com.xwintop.xcore.javafx.helper.LayoutHelper.icon;
 
+import com.xwintop.xcore.util.javafx.JavaFxSystemUtil;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Platform;
@@ -9,6 +10,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 用于存储 App 全局的相关属性
@@ -27,9 +29,12 @@ public class FxApp {
     // 初始化全局属性
     public static void init(Stage primaryStage, String iconPath) {
         FxApp.primaryStage = primaryStage;
-        FxApp.appIcon = icon(iconPath);
+        JavaFxSystemUtil.mainStage = primaryStage;  // 为兼容性保留
 
-        primaryStage.getIcons().add(FxApp.appIcon);
+        if (StringUtils.isNotBlank(iconPath)) {
+            FxApp.appIcon = icon(iconPath);
+            primaryStage.getIcons().add(FxApp.appIcon);
+        }
     }
 
     // 给窗体设置全局图标

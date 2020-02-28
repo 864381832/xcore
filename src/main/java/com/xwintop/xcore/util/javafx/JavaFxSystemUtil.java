@@ -1,21 +1,27 @@
 package com.xwintop.xcore.util.javafx;
 
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-
 @Slf4j
 public class JavaFxSystemUtil {
+
+    /**
+     * @deprecated 使用 {@link com.xwintop.xcore.javafx.FxApp#primaryStage}
+     */
+    @Deprecated
     public static Stage mainStage = null;
 
     /**
+     * 打开目录
      * @param directoryPath 目录路径
-     * @Description 打开目录
      */
     public static void openDirectory(String directoryPath) {
         try {
@@ -27,7 +33,7 @@ public class JavaFxSystemUtil {
 
 
     /**
-     * @Description 获取屏幕尺寸
+     * 获取屏幕尺寸
      * @param width  宽度比
      * @param height 高度比
      * @return 屏幕尺寸
