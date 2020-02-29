@@ -18,12 +18,14 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+@Deprecated
 public class AlertUtil {
 
     public static final int LABEL_MAX_WIDTH = 300;
 
     /**
      * 信息提示框
+     * @deprecated 使用 {@link com.xwintop.xcore.javafx.dialog.FxAlerts}
      */
     public static void showInfoAlert(String message) {
         showInfoAlert("提示", message);
@@ -31,6 +33,7 @@ public class AlertUtil {
 
     /**
      * 信息提示框
+     * @deprecated 使用 {@link com.xwintop.xcore.javafx.dialog.FxAlerts}
      */
     public static void showInfoAlert(String title, String message) {
         new FxDialog<>()
@@ -44,6 +47,7 @@ public class AlertUtil {
 
     /**
      * 确定提示框
+     * @deprecated 使用 {@link com.xwintop.xcore.javafx.dialog.FxAlerts}
      */
     public static boolean confirmYesNo(String title, String message) {
         return confirm(title, message, ButtonType.YES, ButtonType.NO) == ButtonType.YES;
@@ -51,6 +55,7 @@ public class AlertUtil {
 
     /**
      * 确定提示框
+     * @deprecated 使用 {@link com.xwintop.xcore.javafx.dialog.FxAlerts}
      */
     public static boolean confirmOkCancel(String title, String message) {
         return confirm(title, message, ButtonType.OK, ButtonType.CANCEL) == ButtonType.OK;
@@ -58,6 +63,7 @@ public class AlertUtil {
 
     /**
      * 确定提示框
+     * @deprecated 使用 {@link com.xwintop.xcore.javafx.dialog.FxAlerts}
      */
     public static ButtonType confirmYesNoCancel(String title, String message) {
         return confirm(title, message, ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
@@ -65,6 +71,7 @@ public class AlertUtil {
 
     /**
      * 确定提示框
+     * @deprecated 使用 {@link com.xwintop.xcore.javafx.dialog.FxAlerts}
      */
     public static ButtonType confirm(
         String title, String message, ButtonType positiveButtonType, ButtonType... negativeButtonTypes
@@ -135,12 +142,8 @@ public class AlertUtil {
     //////////////////////////////////////////////////////////////
 
     /**
-     * @deprecated use
-     *     {@link #confirmYesNo(String, String)} or
-     *     {@link #confirmOkCancel(String, String)} or
-     *     {@link #confirmYesNoCancel(String, String)}
+     * @deprecated 使用 {@link com.xwintop.xcore.javafx.dialog.FxAlerts}
      */
-    @Deprecated
     public static boolean showConfirmAlert(String message) {
         VBox vBox = new VBox(15);
         vBox.setAlignment(Pos.CENTER);
