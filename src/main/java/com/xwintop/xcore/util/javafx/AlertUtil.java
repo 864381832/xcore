@@ -6,10 +6,17 @@ import static com.xwintop.xcore.javafx.helper.LayoutHelper.vbox;
 import com.xwintop.xcore.javafx.FxApp;
 import com.xwintop.xcore.javafx.dialog.FxDialog;
 import com.xwintop.xcore.javafx.helper.LayoutHelper;
+import java.util.concurrent.atomic.AtomicBoolean;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class AlertUtil {
 
@@ -125,4 +132,33 @@ public class AlertUtil {
         return result[0];
     }
 
+    //////////////////////////////////////////////////////////////
+
+    /**
+     * @deprecated use
+     *     {@link #confirmYesNo(String, String)} or
+     *     {@link #confirmOkCancel(String, String)} or
+     *     {@link #confirmYesNoCancel(String, String)}
+     */
+    @Deprecated
+    public static boolean showConfirmAlert(String message) {
+        VBox vBox = new VBox(15);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setPadding(new Insets(15, 15, 15, 15));
+        Label textArea = new Label(message);
+        textArea.setFont(Font.font(18));
+        vBox.getChildren().add(textArea);
+        Button button = new Button("确定");
+        button.setFont(new Font(16));
+        vBox.getChildren().add(button);
+        Stage newStage = JavaFxViewUtil.getNewStageNull("提示", null, vBox, -1, -1, false, false, false);
+        newStage.initModality(Modality.APPLICATION_MODAL);
+        AtomicBoolean isOk = new AtomicBoolean(false);
+        button.setOnMouseClicked(event -> {
+            isOk.set(true);
+            newStage.close();
+        });
+        newStage.showAndWait();
+        return isOk.get();
+    }
 }
