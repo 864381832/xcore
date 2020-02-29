@@ -1,32 +1,32 @@
 package com.xwintop.xcore.javafx.helper;
 
 import com.xwintop.xcore.XCoreException;
-import com.xwintop.xcore.util.javafx.FxmlUtil;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import org.apache.commons.lang3.StringUtils;
 
 public class FxmlHelper {
 
-    // 根据路径加载 FXML 资源，并返回 FXMLLoader 对象
     public static FXMLLoader loadFromResource(String resourcePath) {
         return loadFromResource(resourcePath, null);
     }
 
-    // 根据路径和 resourceBundleName 加载 FXML 资源，并返回 FXMLLoader 对象
-    public static FXMLLoader loadFromResource(String resourcePath, String resourceBundleName) {
+    public static FXMLLoader loadFromResource(String resourcePath, String bundleName) {
         try {
-            FXMLLoader fxmlLoader;
-            URL url = FxmlUtil.class.getResource(resourcePath);
+            URL resource = FxmlHelper.class.getResource(resourcePath);
+            if (resource == null) {
+                throw new IllegalArgumentException("invalid fxml path " + resourcePath);
+            }
 
-            if (resourceBundleName != null) {
-                fxmlLoader = new FXMLLoader(url, ResourceBundle.getBundle(resourceBundleName));
+            FXMLLoader fxmlLoader;
+            if (StringUtils.isNotBlank(bundleName)) {
+                fxmlLoader = new FXMLLoader(resource, ResourceBundle.getBundle(bundleName));
             } else {
-                fxmlLoader = new FXMLLoader(url);
+                fxmlLoader = new FXMLLoader(resource);
             }
 
             fxmlLoader.load();
@@ -36,14 +36,13 @@ public class FxmlHelper {
         }
     }
 
-    public static Stage loadIntoStage(String fxml, Stage stage) {
-        return loadIntoStage(fxml, stage, null);
+    public static Stage loadIntoStage(String fxml, String bundleName, Stage stage) {
+        stage.setScene(new Scene(loadFromResource(fxml, bundleName).getRoot()));
+        return stage;
     }
 
-    public static Stage loadIntoStage(String fxml, Stage stage, String resourceBundleName) {
-        stage.setScene(new Scene(
-            loadFromResource(fxml, resourceBundleName).getRoot()
-        ));
+    public static Stage loadIntoStage(String fxml, Stage stage) {
+        stage.setScene(new Scene(loadFromResource(fxml).getRoot()));
         return stage;
     }
 }
