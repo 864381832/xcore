@@ -3,7 +3,7 @@
 **注意：**
 
 - 因为代码变动频繁，建议自行下载源码，用 `mvn install` 命令安装，或者
-- 从 [dist](./tree/master/dist) 目录下载临时打包版本，或者
+- 从 [dist](https://gitee.com/xwintop/xcore/tree/master/dist) 目录下载临时打包版本，或者
 - 添加 gitee 的 maven 托管库依赖
 
 > 因为 "xcore" 是 gitee 的敏感词，因此无法将打包上传到 release 页面。带来不便敬请谅解。
