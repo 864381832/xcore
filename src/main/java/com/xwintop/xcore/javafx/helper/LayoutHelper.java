@@ -69,10 +69,18 @@ public class LayoutHelper {
         return new ImageView(icon);
     }
 
+    public static ImageView iconView(String resourcePath) {
+        return iconView(icon(resourcePath));
+    }
+
     public static ImageView iconView(Image icon, double size) {
         ImageView imageView = iconView(icon);
         imageView.setFitHeight(size);
         imageView.setFitWidth(size);
         return imageView;
+    }
+
+    public static ImageView iconView(String resourcePath, double size) {
+        return iconView(icon(resourcePath), size);
     }
 }
