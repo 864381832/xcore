@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import javafx.beans.NamedArg;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Pos;
@@ -34,13 +35,13 @@ public class ToggleGrid<T> extends FlowPane {
 
     private EventListenerSupport<Runnable> selectionUpdatedListeners = EventListenerSupport.create(Runnable.class);
 
-    public ToggleGrid(double cellWidth, double cellHeight) {
+    public ToggleGrid(@NamedArg("cellWidth") double cellWidth, @NamedArg("cellHeight")double cellHeight) {
         this.cellWidth = cellWidth;
         this.cellHeight = cellHeight;
         this.setHgap(1);
         this.setVgap(1);
 
-        this.addEventFilter(MouseDragEvent.MOUSE_DRAG_RELEASED, event -> this.onSelectionEnd());
+        this.addEventFilter(MouseDragEvent.MOUSE_DRAG_RELEASED, event -> this.onMouseReleased());
     }
 
     public void addSelectionUpdatedListener(Runnable runnable) {
@@ -82,14 +83,30 @@ public class ToggleGrid<T> extends FlowPane {
         this.togglePanes.add(togglePane);
     }
 
-    private void onSelectionStart(TogglePane togglePane) {
+    //////////////////////////////////////////////////////////////
+
+    private TogglePane startTogglePane;
+
+    private boolean startTogglePaneSelected;
+
+    private void onMousePressed(TogglePane togglePane) {
+        this.startTogglePane = togglePane;
+        this.startTogglePaneSelected = togglePane.isSelected();
         this.selectionStart = togglePane.index;
         this.selectionEnd = this.selectionStart;
         this.mouseDragging = true;
         updateSelectionByRange();
     }
 
-    private void onSelectionDrag(TogglePane togglePane) {
+    private void onMouseClicked() {
+        // 如果没有移动格子，说明只是一次点击
+        if (this.selectionStart == this.selectionEnd) {
+            startTogglePane.setSelected(!startTogglePaneSelected);
+            selectionUpdated();
+        }
+    }
+
+    private void onMouseDragOver(TogglePane togglePane) {
         if (!this.mouseDragging) {
             return;
         }
@@ -97,9 +114,11 @@ public class ToggleGrid<T> extends FlowPane {
         updateSelectionByRange();
     }
 
-    private void onSelectionEnd() {
+    private void onMouseReleased() {
         this.mouseDragging = false;
     }
+
+    //////////////////////////////////////////////////////////////
 
     private void updateSelectionByRange() {
         int start = Math.min(this.selectionStart, this.selectionEnd);
@@ -107,8 +126,6 @@ public class ToggleGrid<T> extends FlowPane {
         this.togglePanes.forEach(togglePane -> {
             if (togglePane.index >= start && togglePane.index <= end) {
                 togglePane.setSelected(true);
-            } else {
-                togglePane.setSelected(false);
             }
         });
         selectionUpdated();
@@ -149,8 +166,9 @@ public class ToggleGrid<T> extends FlowPane {
             });
 
             this.addEventHandler(MouseDragEvent.DRAG_DETECTED, event -> this.startFullDrag());
-            this.addEventHandler(MouseDragEvent.MOUSE_PRESSED, event -> onSelectionStart(this));
-            this.addEventHandler(MouseDragEvent.MOUSE_DRAG_OVER, event -> onSelectionDrag(this));
+            this.addEventHandler(MouseDragEvent.MOUSE_PRESSED, event -> onMousePressed(this));
+            this.addEventHandler(MouseDragEvent.MOUSE_CLICKED, event -> onMouseClicked());
+            this.addEventHandler(MouseDragEvent.MOUSE_DRAG_OVER, event -> onMouseDragOver(this));
         }
 
         public void setSelected(boolean selected) {
