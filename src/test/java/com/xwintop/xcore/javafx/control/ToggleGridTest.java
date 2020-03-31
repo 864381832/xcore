@@ -2,6 +2,7 @@ package com.xwintop.xcore.javafx.control;
 
 import static com.xwintop.xcore.javafx.helper.LayoutHelper.*;
 
+import com.xwintop.xcore.util.KeyValue;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -17,9 +18,9 @@ public class ToggleGridTest extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         // 创建并填充内容
-        ToggleGrid<Integer> toggleGrid = new ToggleGrid<>(35, 35);
+        ToggleGrid<Integer, Integer> toggleGrid = new ToggleGrid<>(35, 35);
         for (int i = 0; i < 100; i++) {
-            toggleGrid.addCell(i);
+            toggleGrid.addCell(new KeyValue<>(i, i));
         }
 
         // 底部指示
@@ -35,7 +36,7 @@ public class ToggleGridTest extends Application {
                 label("鼠标拖拽来选择："),
                 hyperlink("全选", () -> toggleGrid.select(i -> true)),
                 hyperlink("清空", toggleGrid::clearSelection),
-                hyperlink("选择奇数", () -> toggleGrid.select(i -> i % 2 == 1))
+                hyperlink("选择奇数", () -> toggleGrid.select(i -> i.getValue() % 2 == 1))
             ),
             toggleGrid,
             lblSelection

@@ -1,5 +1,6 @@
 package com.xwintop.xcore.javafx.control;
 
+import com.xwintop.xcore.util.KeyValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -19,7 +20,7 @@ import org.apache.commons.lang3.event.EventListenerSupport;
 /**
  * 一个可以通过鼠标拖拽来选择内容的 Grid
  */
-public class ToggleGrid<T> extends FlowPane {
+public class ToggleGrid<K, V> extends FlowPane {
 
     private double cellWidth;
 
@@ -48,15 +49,15 @@ public class ToggleGrid<T> extends FlowPane {
         this.selectionUpdatedListeners.addListener(runnable);
     }
 
-    public void select(T... values) {
-        HashSet<T> valueSet = new HashSet<>(Arrays.asList(values));
+    public void select(KeyValue<K, V>... items) {
+        HashSet<KeyValue<K, V>> valueSet = new HashSet<>(Arrays.asList(items));
         select(valueSet::contains);
     }
 
-    public void select(Predicate<T> predicate) {
+    public void select(Predicate<KeyValue<K, V>> predicate) {
         this.togglePanes.forEach(
             togglePane -> {
-                boolean selected = predicate.test(togglePane.value);
+                boolean selected = predicate.test(togglePane.item);
                 togglePane.setSelected(selected);
             }
         );
@@ -70,15 +71,22 @@ public class ToggleGrid<T> extends FlowPane {
         selectionUpdated();
     }
 
-    public List<String> getSelectedValues() {
+    public List<V> getSelectedValues() {
         return this.togglePanes.stream()
             .filter(TogglePane::isSelected)
-            .map(TogglePane::getText)
+            .map(togglePane -> togglePane.item.getValue())
             .collect(Collectors.toList());
     }
 
-    public void addCell(T t) {
-        TogglePane togglePane = new TogglePane(cellWidth, cellHeight, t, this.togglePanes.size());
+    public List<K> getSelectedKeys() {
+        return this.togglePanes.stream()
+            .filter(TogglePane::isSelected)
+            .map(togglePane -> togglePane.item.getKey())
+            .collect(Collectors.toList());
+    }
+
+    public void addCell(KeyValue<K, V> item) {
+        TogglePane togglePane = new TogglePane(cellWidth, cellHeight, item, this.togglePanes.size());
         this.getChildren().add(togglePane);
         this.togglePanes.add(togglePane);
     }
@@ -141,11 +149,11 @@ public class ToggleGrid<T> extends FlowPane {
 
         private int index;
 
-        private T value;
+        private KeyValue<K, V> item;
 
         private BooleanProperty selected = new SimpleBooleanProperty();
 
-        public TogglePane(double width, double height, T value, int index) {
+        public TogglePane(double width, double height, KeyValue<K, V> item, int index) {
             this.setAlignment(Pos.CENTER);
             this.setPrefSize(width, height);
             this.setMinSize(width, height);
@@ -153,9 +161,9 @@ public class ToggleGrid<T> extends FlowPane {
             setUnselected();
 
             this.getChildren().add(label);
-            this.label.setText(String.valueOf(value));
+            this.label.setText(String.valueOf(item));
             this.index = index;
-            this.value = value;
+            this.item = item;
 
             this.selected.addListener((observable, oldValue, selected) -> {
                 if (selected) {
