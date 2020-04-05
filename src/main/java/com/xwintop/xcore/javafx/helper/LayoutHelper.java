@@ -1,7 +1,6 @@
 package com.xwintop.xcore.javafx.helper;
 
 import com.xwintop.xcore.XCoreException;
-import java.net.URL;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -13,6 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
+import java.net.URL;
 
 /**
  * 用于快速创建一些 Node 对象
