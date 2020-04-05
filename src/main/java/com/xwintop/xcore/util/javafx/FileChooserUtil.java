@@ -1,18 +1,15 @@
 package com.xwintop.xcore.util.javafx;
 
-import com.xwintop.xcore.util.MyLogger;
+import com.xwintop.xcore.javafx.helper.DropContentHelper;
+import com.xwintop.xcore.util.FileUtil;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import org.apache.commons.io.FileUtils;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
-import java.nio.charset.Charset;
 
 /**
  * 文件选择工具
@@ -23,10 +20,8 @@ public class FileChooserUtil {
 
     public static final File HOME_DIRECTORY = FileSystemView.getFileSystemView().getHomeDirectory();
 
-    private static MyLogger myLogger = new MyLogger(FileChooserUtil.class);
-
     public static File chooseFile() {
-        return chooseFile(null);
+        return chooseFile((ExtensionFilter) null);
     }
 
     public static File chooseFile(ExtensionFilter... extensionFilter) {
@@ -92,67 +87,56 @@ public class FileChooserUtil {
     ///////////////////////////////////////////////////////////////
 
     public static File chooseDirectory() {
+        return chooseDirectory(null);
+    }
+
+    public static File chooseDirectory(File initialDirectory) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
+        if (initialDirectory != null) {
+            directoryChooser.setInitialDirectory(initialDirectory);
+        }
         return directoryChooser.showDialog(null);
     }
 
     ///////////////////////////////////////////////////////////////
 
     public static void setOnDrag(TextField textField, FileType fileType) {
-        textField.setOnDragOver(event -> {
-            if (event.getGestureSource() != textField) {
-                event.acceptTransferModes(TransferMode.ANY);
-            }
-        });
+        DropContentHelper.accept(textField,
 
-        textField.setOnDragDropped(event -> {
-            Dragboard dragboard = event.getDragboard();
-            if (dragboard.hasFiles()) {
-                try {
-                    File file = dragboard.getFiles().get(0);
-                    if (file != null) {
-                        if (fileType == FileType.FILE) {
-                            if (file.isFile()) {
-                                textField.setText(file.getAbsolutePath());
-                            }
-                        } else if (fileType == FileType.FOLDER) {
-                            if (file.isDirectory()) {
-                                textField.setText(file.getAbsolutePath());
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    myLogger.error(e);
-                }
-            }
-        });
+            dragboard -> dragboard.hasFiles() &&
+                dragboard.getFiles().stream().anyMatch(fileType::match),
+
+            (__, dragboard) -> textField.setText(
+                dragboard.getFiles().stream()
+                    .filter(fileType::match)
+                    .map(File::getAbsolutePath)
+                    .findFirst().orElse("")
+            )
+        );
     }
 
     public static void setOnDragByOpenFile(TextInputControl textField) {
-        textField.setOnDragOver(event -> {
-            if (event.getGestureSource() != textField) {
-                event.acceptTransferModes(TransferMode.ANY);
-            }
-        });
-        textField.setOnDragDropped(event -> {
-            Dragboard dragboard = event.getDragboard();
-            if (dragboard.hasFiles()) {
-                try {
-                    File file = dragboard.getFiles().get(0);
-                    if (file != null) {
-                        if (file.isFile()) {
-                            textField.setAccessibleText(file.getAbsolutePath());
-                            textField.setText(FileUtils.readFileToString(file, Charset.defaultCharset()));
-                        }
-                    }
-                } catch (Exception e) {
-                    myLogger.error(e);
-                }
-            }
-        });
+        DropContentHelper.accept(textField,
+
+            dragboard -> dragboard.hasFiles() &&
+                dragboard.getFiles().stream().anyMatch(File::isFile),
+
+            (__, dragboard) -> textField.setText(
+                dragboard.getFiles().stream()
+                    .filter(File::isFile)
+                    .map(FileUtil::readText)
+                    .findFirst().orElse("")
+            )
+        );
     }
 
     public enum FileType {
-        FILE, FOLDER
+        FILE, FOLDER;
+
+        public boolean match(File file) {
+            return
+                (this == FILE && file.isFile()) ||
+                    (this == FOLDER && file.isDirectory());
+        }
     }
 }
