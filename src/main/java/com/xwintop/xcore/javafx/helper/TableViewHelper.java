@@ -73,6 +73,16 @@ public class TableViewHelper<T> {
         return this;
     }
 
+    public TableViewHelper<T> addDoubleColumn(String text, Function<T, Double> toDouble) {
+        this.tableView.getColumns().add(TableViewHelper.createDoubleColumn(text, toDouble));
+        return this;
+    }
+
+    public TableViewHelper<T> addDoublePropertyColumn(String text, Function<T, ObservableValue<Double>> ob) {
+        this.tableView.getColumns().add(TableViewHelper.createDoublePropColumn(text, ob));
+        return this;
+    }
+
     public TableViewHelper<T> addDateColumn(String text, Function<T, Date> toDate, String datePattern) {
         this.tableView.getColumns().add(TableViewHelper.createDateColumn(text, toDate, datePattern));
         return this;
@@ -160,6 +170,20 @@ public class TableViewHelper<T> {
 
         TableColumn<T, Integer> tableColumn = new TableColumn<>(text);
         tableColumn.setCellValueFactory(cell -> toIntProperty.apply(cell.getValue()));
+        return tableColumn;
+    }
+
+    private static <T> TableColumn<T, ?> createDoubleColumn(String text, Function<T, Double> toDouble) {
+        TableColumn<T, Double> tableColumn = new TableColumn<>(text);
+        tableColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(toDouble.apply(param.getValue())));
+        return tableColumn;
+    }
+
+    private static <T> TableColumn<T, ?> createDoublePropColumn(
+        String text, Function<T, ObservableValue<Double>> toDoubleProperty) {
+
+        TableColumn<T, Double> tableColumn = new TableColumn<>(text);
+        tableColumn.setCellValueFactory(cell -> toDoubleProperty.apply(cell.getValue()));
         return tableColumn;
     }
 
