@@ -66,6 +66,11 @@
       <artifactId>dom4j</artifactId>
       <version>2.1.1</version>
     </dependency>
+    <dependency>
+      <groupId>jaxen</groupId>
+      <artifactId>jaxen</artifactId>
+      <version>1.2.0</version>
+    </dependency>
 
     <!-- quartz 调度任务包 -->
     <dependency>
