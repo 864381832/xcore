@@ -1,8 +1,10 @@
 package com.xwintop.xcore.javafx.helper;
 
+import com.xwintop.xcore.util.EnumUtil;
 import com.xwintop.xcore.util.KeyValue;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import javafx.scene.control.ChoiceBox;
 import javafx.util.StringConverter;
@@ -10,6 +12,13 @@ import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 
 public class ChoiceBoxHelper {
+
+    public static <T extends Enum<T>> void setContentDisplay(
+        ChoiceBox<T> choiceBox, Class<T> enumType, Function<T, String> toString
+    ) {
+        List<KeyValue<String, T>> keyValues = EnumUtil.toKeyValueList(enumType, toString);
+        setContentDisplay(choiceBox, keyValues);
+    }
 
     public static <T> void setContentDisplay(ChoiceBox<T> choiceBox, KeyValue<String, T>... keyValues) {
         setContentDisplay(choiceBox, Arrays.asList(keyValues));
