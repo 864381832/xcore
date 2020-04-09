@@ -1,5 +1,7 @@
 package com.xwintop.xcore.javafx.dialog;
 
+import static com.xwintop.xcore.javafx.helper.LayoutHelper.button;
+
 import com.xwintop.xcore.javafx.FxApp;
 import com.xwintop.xcore.javafx.helper.LayoutHelper;
 import javafx.application.Application;
@@ -20,8 +22,9 @@ public class FxDialogTest extends Application {
 
         primaryStage.setScene(new Scene(new BorderPane(
             LayoutHelper.vbox(10, 10,
-                LayoutHelper.button("打开带按钮的对话框", () -> openDialog(primaryStage)),
-                LayoutHelper.button("打开不带按钮的对话框", () -> openDialog2(primaryStage))
+                button("打开带按钮的对话框", () -> openDialog(primaryStage)),
+                button("打开不带按钮的对话框", () -> openDialog2(primaryStage)),
+                button("不可通过顶部按钮关闭的对话框", () -> openDialog3(primaryStage))
             )
         ), 400, 300));
         primaryStage.show();
@@ -63,5 +66,19 @@ public class FxDialogTest extends Application {
         // 通过 Controller 对象初始化对话框内容
         FxDialogTestController controller = dialog.show();
         controller.initName("这是一个名字");
+    }
+
+    private void openDialog3(Stage primaryStage) {
+
+        // 创建不带按钮的对话框
+        FxDialog<FxDialogTestController> dialog = new FxDialog<FxDialogTestController>()
+            .setOwner(primaryStage)
+            .setCloseable(false)
+            .setBodyFxml("/sample-dialog-body.fxml")
+            .setButtonTypes(ButtonType.CLOSE)
+            .setButtonHandler(ButtonType.CLOSE, (event, stage) -> stage.close())
+            .setTitle("对话框");
+
+        dialog.show();
     }
 }

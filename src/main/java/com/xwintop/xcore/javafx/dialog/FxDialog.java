@@ -6,9 +6,11 @@ import com.xwintop.xcore.util.javafx.FxmlUtil;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -40,6 +42,8 @@ public class FxDialog<T> {
 
     private double prefHeight;
 
+    private boolean closeable = true;
+
     private Stage owner;
 
     private String bodyFxmlPath;
@@ -51,6 +55,8 @@ public class FxDialog<T> {
     private ButtonType[] buttonTypes;
 
     private Map<ButtonType, BiConsumer<ActionEvent, Stage>> buttonHandlers = new HashMap<>();
+
+    private Consumer<Stage> withStage;
 
     public FxDialog<T> setResizable(boolean resizable) {
         this.resizable = resizable;
@@ -94,6 +100,16 @@ public class FxDialog<T> {
 
     public FxDialog<T> setModal(boolean modal) {
         this.modal = modal;
+        return this;
+    }
+
+    public FxDialog<T> setCloseable(boolean closeable) {
+        this.closeable = closeable;
+        return this;
+    }
+
+    public FxDialog<T> withStage(Consumer<Stage> withStage) {
+        this.withStage = withStage;
         return this;
     }
 
@@ -173,6 +189,14 @@ public class FxDialog<T> {
 
         if (this.prefHeight > 0) {
             stage.setHeight(this.prefHeight);
+        }
+
+        if (!this.closeable) {
+            stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, Event::consume);
+        }
+
+        if (this.withStage != null) {
+            this.withStage.accept(stage);
         }
 
         return stage;
