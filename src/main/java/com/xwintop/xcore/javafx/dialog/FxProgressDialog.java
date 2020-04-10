@@ -24,6 +24,14 @@ public class FxProgressDialog {
     public static final DecimalFormat FORMAT = new DecimalFormat("#.00%");
 
     public static void showProgress(Stage owner, ProgressTask progressTask, String message) {
+        showProgress0(owner, progressTask, message, false);
+    }
+
+    public static void showProgressAndWait(Stage owner, ProgressTask progressTask, String message) {
+        showProgress0(owner, progressTask, message, true);
+    }
+
+    public static void showProgress0(Stage owner, ProgressTask progressTask, String message, boolean wait) {
         Service<Void> service = new Service<Void>() {
             @Override
             protected Task<Void> createTask() {
@@ -44,7 +52,11 @@ public class FxProgressDialog {
                 service.setOnFailed(event -> stage.close());
             });
 
-        fxDialog.show();
+        if (wait) {
+            fxDialog.showAndWait();
+        } else {
+            fxDialog.show();
+        }
     }
 
     private static Parent progressBody(ProgressTask progressTask, String message) {
@@ -53,11 +65,8 @@ public class FxProgressDialog {
         progressBar.setPrefHeight(25);
         progressBar.setPrefWidth(300);
 
-        progressTask.maxProgressProperty().addListener(
-            (__1, __2, __3) -> updateProgress(progressTask, progressBar, progressLabel)
-        );
-        progressTask.currentProgressProperty().addListener(
-            (__1, __2, __3) -> updateProgress(progressTask, progressBar, progressLabel)
+        progressTask.progressProperty().addListener(
+            (observable, oldValue, newValue) -> updateProgress(progressTask, progressBar, progressLabel)
         );
 
         Label messageLabel = new Label();
@@ -73,10 +82,8 @@ public class FxProgressDialog {
     private static void updateProgress(
         ProgressTask progressTask, ProgressBar progressBar, Label progressLabel
     ) {
-        double current = progressTask.currentProgressProperty().get();
-        double max = progressTask.maxProgressProperty().get();
         FxApp.runLater(() -> {
-            double progress = current / max;
+            double progress = progressTask.getProgress();
             progressBar.setProgress(progress);
             progressLabel.setText(FORMAT.format(progress));
         });

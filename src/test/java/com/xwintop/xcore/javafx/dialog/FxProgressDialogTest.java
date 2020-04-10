@@ -27,9 +27,16 @@ public class FxProgressDialogTest extends Application {
         ProgressTask progressTask = new ProgressTask() {
             @Override
             protected void execute() throws Exception {
-                while (getCurrentProgress() < getMaxProgress()) {
-                    addProgress(4);
-                    Thread.sleep(200);
+                int current = 0, max = 100;
+                try {
+                    while (current < max) {
+                        updateProgress(current, max);
+                        current += 4;
+                        Thread.sleep(200);
+                    }
+                    System.out.println("执行完毕。");
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         };
