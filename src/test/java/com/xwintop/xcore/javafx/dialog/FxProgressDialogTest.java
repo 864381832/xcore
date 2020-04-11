@@ -43,8 +43,10 @@ public class FxProgressDialogTest extends Application {
 
         progressTask.setOnCancelled(event -> System.out.println("用户取消了"));
 
-        FxProgressDialog.showProgress(
-            primaryStage, progressTask, "正在执行某个重要任务..."
-        );
+        FxProgressDialog fxProgressDialog =
+            FxProgressDialog.create(primaryStage, progressTask, "正在执行某个重要任务...");
+
+        fxProgressDialog.setShowAsPercentage(false);
+        fxProgressDialog.show();
     }
 }

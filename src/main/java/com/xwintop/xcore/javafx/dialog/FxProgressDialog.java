@@ -23,15 +23,40 @@ public class FxProgressDialog {
 
     public static final DecimalFormat FORMAT = new DecimalFormat("#.00%");
 
-    public static void showProgress(Stage owner, ProgressTask progressTask, String message) {
-        showProgress0(owner, progressTask, message, false);
+    private final ProgressTask progressTask;
+
+    private final Stage owner;
+
+    private final Label messageLabel = new Label();
+
+    private final Label progressLabel = new Label();
+
+    private boolean showAsPercentage = true;
+
+    public static FxProgressDialog create(Stage owner, ProgressTask progressTask, String message) {
+        return new FxProgressDialog(owner, progressTask, message);
     }
 
-    public static void showProgressAndWait(Stage owner, ProgressTask progressTask, String message) {
-        showProgress0(owner, progressTask, message, true);
+    private FxProgressDialog(Stage owner, ProgressTask progressTask, String message) {
+        this.owner = owner;
+        this.progressTask = progressTask;
+
+        progressTask.updateMessage(message);
     }
 
-    public static void showProgress0(Stage owner, ProgressTask progressTask, String message, boolean wait) {
+    public void setShowAsPercentage(boolean showAsPercentage) {
+        this.showAsPercentage = showAsPercentage;
+    }
+
+    public void show() {
+        show0(false);
+    }
+
+    public void showAndWait() {
+        show0(true);
+    }
+
+    private void show0(boolean wait) {
         Service<Void> service = new Service<Void>() {
             @Override
             protected Task<Void> createTask() {
@@ -41,7 +66,7 @@ public class FxProgressDialog {
 
         FxDialog<Void> fxDialog = new FxDialog<Void>()
             .setOwner(owner)
-            .setBody(progressBody(progressTask, message))
+            .setBody(progressBody(progressTask))
             .setButtonTypes(ButtonType.CANCEL)
             .setButtonHandler(ButtonType.CANCEL, (event, stage) -> service.cancel())
             .setCloseable(false)
@@ -59,8 +84,7 @@ public class FxProgressDialog {
         }
     }
 
-    private static Parent progressBody(ProgressTask progressTask, String message) {
-        Label progressLabel = new Label();
+    private Parent progressBody(ProgressTask progressTask) {
         ProgressBar progressBar = new ProgressBar();
         progressBar.setPrefHeight(25);
         progressBar.setPrefWidth(300);
@@ -69,9 +93,7 @@ public class FxProgressDialog {
             (observable, oldValue, newValue) -> updateProgress(progressTask, progressBar, progressLabel)
         );
 
-        Label messageLabel = new Label();
         messageLabel.textProperty().bind(progressTask.messageProperty());
-        progressTask.updateMessage(message);
 
         return vbox(0, 5, Pos.CENTER,
             hbox(5, 0, messageLabel),
@@ -79,13 +101,25 @@ public class FxProgressDialog {
         );
     }
 
-    private static void updateProgress(
+    private void updateProgress(
         ProgressTask progressTask, ProgressBar progressBar, Label progressLabel
     ) {
         FxApp.runLater(() -> {
             double progress = progressTask.getProgress();
             progressBar.setProgress(progress);
-            progressLabel.setText(FORMAT.format(progress));
+            if (showAsPercentage) {
+                progressLabel.setText(FORMAT.format(progress));
+            } else {
+                if (progressTask.getTotalWork() <= 1) {
+                    progressLabel.setText(
+                        String.format("%f / %f", progressTask.getWorkDone(), progressTask.getTotalWork())
+                    );
+                } else {
+                    progressLabel.setText(
+                        String.format("%d / %d", (int) progressTask.getWorkDone(), (int) progressTask.getTotalWork())
+                    );
+                }
+            }
         });
     }
 }
