@@ -24,6 +24,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -44,7 +45,7 @@ public class FxDialog<T> {
 
     private boolean closeable = true;
 
-    private Stage owner;
+    private Window owner;
 
     private String bodyFxmlPath;
 
@@ -78,7 +79,7 @@ public class FxDialog<T> {
         return this;
     }
 
-    public FxDialog<T> setOwner(Stage owner) {
+    public FxDialog<T> setOwner(Window owner) {
         this.owner = owner;
         return this;
     }
@@ -227,7 +228,7 @@ public class FxDialog<T> {
         return button;
     }
 
-    private void adjustPosition(Stage dialog, Stage owner) {
+    private void adjustPosition(Window dialog, Window owner) {
         dialog.addEventHandler(WindowEvent.WINDOW_SHOWN, event -> {
             dialog.setX(Math.max(0, owner.getX() + owner.getWidth() / 2 - dialog.getWidth() / 2));
             dialog.setY(Math.max(0, owner.getY() + owner.getHeight() / 2 - dialog.getHeight() / 2));

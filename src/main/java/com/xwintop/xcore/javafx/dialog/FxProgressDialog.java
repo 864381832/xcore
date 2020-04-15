@@ -14,7 +14,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
+import javafx.stage.Window;
 
 /**
  * 执行后台任务的同时打开一个置顶的进度窗口，用户可以通过点击取消按钮中止任务执行
@@ -25,7 +25,7 @@ public class FxProgressDialog {
 
     private final ProgressTask progressTask;
 
-    private final Stage owner;
+    private final Window owner;
 
     private final Label messageLabel = new Label();
 
@@ -33,11 +33,11 @@ public class FxProgressDialog {
 
     private boolean showAsPercentage = true;
 
-    public static FxProgressDialog create(Stage owner, ProgressTask progressTask, String message) {
+    public static FxProgressDialog create(Window owner, ProgressTask progressTask, String message) {
         return new FxProgressDialog(owner, progressTask, message);
     }
 
-    private FxProgressDialog(Stage owner, ProgressTask progressTask, String message) {
+    private FxProgressDialog(Window owner, ProgressTask progressTask, String message) {
         this.owner = owner;
         this.progressTask = progressTask;
 
