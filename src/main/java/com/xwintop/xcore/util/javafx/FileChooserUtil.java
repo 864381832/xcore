@@ -21,7 +21,7 @@ public class FileChooserUtil {
     public static final File HOME_DIRECTORY = FileSystemView.getFileSystemView().getHomeDirectory();
 
     public static File chooseFile() {
-        return chooseFile((ExtensionFilter) null);
+        return chooseFile(null);
     }
 
     public static File chooseFile(ExtensionFilter... extensionFilter) {
