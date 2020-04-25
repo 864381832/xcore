@@ -42,4 +42,12 @@ public class IntegerSpinner extends Spinner<Integer> {
     public int getMax() {
         return getSpinnerValueFactory().getMax();
     }
+
+    public void setMax(int max) {
+        getSpinnerValueFactory().setMax(max);
+    }
+
+    public void setMin(int min) {
+        getSpinnerValueFactory().setMin(min);
+    }
 }
