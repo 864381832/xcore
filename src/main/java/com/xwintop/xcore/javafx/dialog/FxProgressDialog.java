@@ -14,6 +14,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.StackPane;
+import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 /**
@@ -33,6 +34,8 @@ public class FxProgressDialog {
 
     private boolean showAsPercentage = true;
 
+    private boolean decorated = true;
+
     public static FxProgressDialog create(Window owner, ProgressTask progressTask, String message) {
         return new FxProgressDialog(owner, progressTask, message);
     }
@@ -42,6 +45,10 @@ public class FxProgressDialog {
         this.progressTask = progressTask;
 
         progressTask.updateMessage(message);
+    }
+
+    public void setDecorated(boolean decorated) {
+        this.decorated = decorated;
     }
 
     public void setShowAsPercentage(boolean showAsPercentage) {
@@ -71,6 +78,11 @@ public class FxProgressDialog {
             .setButtonHandler(ButtonType.CANCEL, (event, stage) -> service.cancel())
             .setCloseable(false)
             .withStage(stage -> {
+
+                if (!decorated) {
+                    stage.initStyle(StageStyle.UNDECORATED);
+                }
+
                 stage.addEventHandler(WINDOW_SHOWN, event -> service.start());
                 service.setOnSucceeded(event -> stage.close());
                 service.setOnCancelled(event -> stage.close());
