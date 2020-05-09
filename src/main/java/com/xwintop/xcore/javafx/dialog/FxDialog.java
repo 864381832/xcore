@@ -5,6 +5,7 @@ import com.xwintop.xcore.javafx.FxApp;
 import com.xwintop.xcore.util.javafx.FxmlUtil;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -59,6 +60,8 @@ public class FxDialog<T> {
 
     private Consumer<Stage> withStage;
 
+    private ResourceBundle resourceBundle;
+
     public FxDialog<T> setResizable(boolean resizable) {
         this.resizable = resizable;
         return this;
@@ -94,6 +97,11 @@ public class FxDialog<T> {
         return this;
     }
 
+    public FxDialog<T> setResourceBundle(ResourceBundle resourceBundle) {
+        this.resourceBundle = resourceBundle;
+        return this;
+    }
+
     public FxDialog<T> setButtonTypes(ButtonType... buttonTypes) {
         this.buttonTypes = buttonTypes;
         return this;
@@ -120,8 +128,12 @@ public class FxDialog<T> {
     }
 
     public T show() {
+
         if (this.bodyFxmlPath != null) {
-            FXMLLoader fxmlLoader = FxmlUtil.loadFxmlFromResource(this.bodyFxmlPath);
+            FXMLLoader fxmlLoader = resourceBundle == null?
+                FxmlUtil.loadFxmlFromResource(this.bodyFxmlPath):
+                FxmlUtil.loadFxmlFromResource(this.bodyFxmlPath, resourceBundle);
+
             Stage stage = createStage(fxmlLoader.getRoot());
             stage.show();
             return fxmlLoader.getController();
@@ -137,8 +149,12 @@ public class FxDialog<T> {
     }
 
     public T showAndWait() {
+
         if (this.bodyFxmlPath != null) {
-            FXMLLoader fxmlLoader = FxmlUtil.loadFxmlFromResource(this.bodyFxmlPath);
+            FXMLLoader fxmlLoader = resourceBundle == null?
+                FxmlUtil.loadFxmlFromResource(this.bodyFxmlPath):
+                FxmlUtil.loadFxmlFromResource(this.bodyFxmlPath, resourceBundle);
+
             Stage stage = createStage(fxmlLoader.getRoot());
             stage.showAndWait();
             return fxmlLoader.getController();
