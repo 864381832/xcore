@@ -1,12 +1,12 @@
 package com.xwintop.xcore.javafx.dialog;
 
-import static com.xwintop.xcore.javafx.helper.LayoutHelper.button;
-import static com.xwintop.xcore.javafx.helper.LayoutHelper.vbox;
-
 import com.xwintop.xcore.javafx.FxApp;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import static com.xwintop.xcore.javafx.helper.LayoutHelper.button;
+import static com.xwintop.xcore.javafx.helper.LayoutHelper.vbox;
 
 public class FxAlertsTest extends Application {
 
@@ -25,6 +25,9 @@ public class FxAlertsTest extends Application {
                 button("异常对话框", this::alertException)
             )
         ));
+
+        FxAlerts.error("错误", "主窗体还没有显示之前的错误提示");
+
         primaryStage.show();
     }
 

@@ -1,16 +1,17 @@
 package com.xwintop.xcore.javafx;
 
-import static com.xwintop.xcore.javafx.helper.LayoutHelper.icon;
-
 import com.xwintop.xcore.util.javafx.JavaFxSystemUtil;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.application.Platform;
 import javafx.scene.control.Dialog;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.xwintop.xcore.javafx.helper.LayoutHelper.icon;
 
 /**
  * 用于存储 App 全局的相关属性
@@ -47,7 +48,7 @@ public class FxApp {
 
     // 给窗体设置 owner
     public static void setupModality(Stage stage) {
-        if (FxApp.primaryStage != null) {
+        if (stage != null && FxApp.primaryStage != null && FxApp.primaryStage.isShowing()) {
             stage.initOwner(FxApp.primaryStage);
             stage.initModality(Modality.WINDOW_MODAL);
         }
@@ -55,7 +56,7 @@ public class FxApp {
 
     // 给窗体设置 owner
     public static void setupModality(Dialog<?> stage) {
-        if (FxApp.primaryStage != null) {
+        if (stage != null && FxApp.primaryStage != null && FxApp.primaryStage.isShowing()) {
             stage.initOwner(FxApp.primaryStage);
             stage.initModality(Modality.WINDOW_MODAL);
         }
