@@ -96,7 +96,7 @@ public class TextFieldInputHistoryDialog {
         }
     }
 
-    public void setOnMouseClicked(TextField hostText, Consumer<Map<String, String>> consumer, Function<Map, String> menuItemName) {
+    public void setOnMouseClicked(TextField hostText, Consumer<Map<String, String>> consumer, Function<Map<String, String>, String> menuItemName) {
         hostText.setOnMouseClicked(event -> {
             if (contextMenu.isShowing()) {
                 contextMenu.hide();
@@ -131,6 +131,53 @@ public class TextFieldInputHistoryDialog {
             contextMenu.getItems().add(menu_tab);
             contextMenu.show(hostText, null, 0, hostText.getHeight());
         });
+    }
+
+    //设置输入框监听搜索显示
+    public void setTextPropertyListener(TextField hostText, Consumer<Map<String, String>> consumer, Function<Map<String, String>, String> menuItemName) {
+        hostText.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (contextMenu.isShowing()) {
+                contextMenu.hide();
+            }
+            contextMenu.getItems().clear();
+            if (this.tableData != null) {
+                for (Map<String, String> map : this.tableData) {
+                    String menuItemNameStr = null;
+                    if (menuItemName == null) {
+                        menuItemNameStr = map.get("name");
+                    } else {
+                        menuItemNameStr = menuItemName.apply(map);
+                    }
+                    if (!StringUtils.containsIgnoreCase(menuItemNameStr, newValue)) {
+                        continue;
+                    }
+                    MenuItem menu_tab = new MenuItem(menuItemNameStr);
+                    menu_tab.setOnAction(event1 -> {
+                        if (consumer == null) {
+                            hostText.setText(map.get("name"));
+                        } else {
+                            consumer.accept(map);
+                        }
+                    });
+                    contextMenu.getItems().add(menu_tab);
+                }
+            }
+            MenuItem menu_tab = new MenuItem("编辑历史输入");
+            menu_tab.setOnAction(event1 -> {
+                try {
+                    TextFieldInputHistoryDialog.this.openEditWindow();
+                } catch (Exception e) {
+                    log.error("加载历史输入编辑界面失败", e);
+                }
+            });
+            contextMenu.getItems().add(menu_tab);
+            contextMenu.show(hostText, null, 0, hostText.getHeight());
+        });
+    }
+
+    public void setOnMouseClickedAndTextPropertyListener(TextField hostText, Consumer<Map<String, String>> consumer, Function<Map<String, String>, String> menuItemName) {
+        this.setOnMouseClicked(hostText, consumer, menuItemName);
+        this.setTextPropertyListener(hostText, consumer, menuItemName);
     }
 
     public void openEditWindow() {
