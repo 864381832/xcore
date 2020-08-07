@@ -4,7 +4,7 @@
 
   <groupId>com.xwintop</groupId>
   <artifactId>xcore</artifactId>
-  <version>0.0.6</version>
+  <version>0.0.6-jdk11</version>
   <packaging>jar</packaging>
 
   <name>xcore</name>
@@ -12,8 +12,8 @@
   <url>https://gitee.com/xwintop/xcore</url>
 
   <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -47,6 +47,42 @@
   </repositories>
 
   <dependencies>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>11.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-base</artifactId>
+      <version>11.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-graphics</artifactId>
+      <version>11.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>11.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-swing</artifactId>
+      <version>11.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-media</artifactId>
+      <version>11.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-web</artifactId>
+      <version>11.0.2</version>
+    </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -83,13 +119,13 @@
     <dependency>
       <groupId>org.controlsfx</groupId>
       <artifactId>controlsfx</artifactId>
-      <version>8.40.16</version>
+      <version>11.0.2</version>
     </dependency>
     <!-- jfoenix javaFx界面工具类 -->
     <dependency>
       <groupId>com.jfoenix</groupId>
       <artifactId>jfoenix</artifactId>
-      <version>8.0.9</version>
+      <version>9.0.10</version>
     </dependency>
 
     <!-- commons 开发工具包 -->
@@ -199,6 +235,11 @@
           <forkMode>once</forkMode>
           <argLine>-Dfile.encoding=UTF-8</argLine>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
       </plugin>
     </plugins>
   </build>
