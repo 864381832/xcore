@@ -24,7 +24,7 @@
     <dependency>
         <groupId>com.xwintop</groupId>
         <artifactId>xcore</artifactId>
-        <version>0.0.3-SNAPSHOT</version>
+        <version>0.0.6</version>
         <scope>provided</scope>
     </dependency>
 </dependencies>
@@ -44,3 +44,6 @@ git 托管 maven可参考教程(若无法下载请拉取项目自行编译)。[�
   1. 优化界面布局
 - 0.0.5  2020-03-16
   1. 添加进度条对话框
+- 0.0.6 2020-07-04
+  1. 添加历史输入框功能封装
+  2. 优化部分功能代码
