@@ -1,8 +1,10 @@
 # Default ignored files
 #/.gitignore
-/xcore.iml
-/data
-/log/
-/target/
-/.idea
+data
+log/
+target/
+.idea/
+.mvnd/
+*.iml
+
 C:
