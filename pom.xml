@@ -4,7 +4,7 @@
 
   <groupId>com.xwintop</groupId>
   <artifactId>xcore</artifactId>
-  <version>0.0.6-jdk11</version>
+  <version>0.0.6-jdk15-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>xcore</name>
@@ -12,9 +12,10 @@
   <url>https://gitee.com/xwintop/xcore</url>
 
   <properties>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.test.skip>true</maven.test.skip>
+    <maven.compiler.source>15</maven.compiler.source>
+    <maven.compiler.target>15</maven.compiler.target>
   </properties>
 
   <repositories>
@@ -22,65 +23,28 @@
       <id>aliyunmaven</id>
       <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
     </repository>
-    <repository>
-      <id>spring-snapshots</id>
-      <url>http://repo.spring.io/snapshot</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>spring-milestones</id>
-      <url>http://repo.spring.io/milestone</url>
-    </repository>
-    <repository>
-      <id>apache.snapshots</id>
-      <name>Apache Development Snapshot Repository</name>
-      <url>https://repository.apache.org/content/repositories/snapshots/</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
   </repositories>
 
   <dependencies>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
-      <version>11.0.2</version>
-    </dependency>
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-base</artifactId>
-      <version>11.0.2</version>
-    </dependency>
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-graphics</artifactId>
-      <version>11.0.2</version>
+      <version>15</version>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
-      <version>11.0.2</version>
+      <version>15</version>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-swing</artifactId>
-      <version>11.0.2</version>
-    </dependency>
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-media</artifactId>
-      <version>11.0.2</version>
+      <version>15</version>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-web</artifactId>
-      <version>11.0.2</version>
+      <version>15</version>
     </dependency>
 
     <dependency>
@@ -89,11 +53,13 @@
       <version>4.12</version>
       <scope>test</scope>
     </dependency>
+
     <!-- logback日志记录 -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>1.2.3</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->
@@ -113,13 +79,14 @@
       <groupId>org.quartz-scheduler</groupId>
       <artifactId>quartz</artifactId>
       <version>2.3.1</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- javaFx开发工具包 -->
     <dependency>
       <groupId>org.controlsfx</groupId>
       <artifactId>controlsfx</artifactId>
-      <version>11.0.2</version>
+      <version>11.0.3</version>
     </dependency>
     <!-- jfoenix javaFx界面工具类 -->
     <dependency>
@@ -208,39 +175,45 @@
 
   </dependencies>
 
-  <distributionManagement>
-    <repository>
-      <id>xwintop-maven</id>
-      <url>file:C:/gitFiles/maven/repository/</url>
-    </repository>
-  </distributionManagement>
+  <profiles>
+    <profile>
+      <id>dev-local</id>
+      <distributionManagement>
+        <repository>
+          <id>xwintop-maven</id>
+          <url>file:C:/gitFiles/maven/repository/</url>
+        </repository>
+      </distributionManagement>
 
-  <build>
-    <plugins>
-      <!-- 设置resouce目录下的所有文件编码，否则如果配置xml文件中有中文字符，部署后可能会引起运行失败 -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>3.0.2</version>
-        <configuration>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.20</version>
-        <configuration>
-          <skip>true</skip>
-          <forkMode>once</forkMode>
-          <argLine>-Dfile.encoding=UTF-8</argLine>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
-      </plugin>
-    </plugins>
-  </build>
+      <build>
+        <plugins>
+          <!-- 设置resouce目录下的所有文件编码，否则如果配置xml文件中有中文字符，部署后可能会引起运行失败 -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.0.2</version>
+            <configuration>
+              <encoding>UTF-8</encoding>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.20</version>
+            <configuration>
+              <skip>true</skip>
+              <forkMode>once</forkMode>
+              <argLine>-Dfile.encoding=UTF-8</argLine>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>
