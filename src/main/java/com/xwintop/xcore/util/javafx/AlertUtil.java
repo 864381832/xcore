@@ -6,13 +6,14 @@ import static com.xwintop.xcore.javafx.helper.LayoutHelper.vbox;
 import com.xwintop.xcore.javafx.FxApp;
 import com.xwintop.xcore.javafx.dialog.FxDialog;
 import com.xwintop.xcore.javafx.helper.LayoutHelper;
+
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
@@ -163,5 +164,52 @@ public class AlertUtil {
         });
         newStage.showAndWait();
         return isOk.get();
+    }
+
+    @Deprecated
+    public static String showInputAlert(String message) {
+        return showInputAlertDefaultValue(message, null);
+    }
+
+    public static String[] showInputAlert(String message, String... names) {
+        return showInputAlertMore(message, names);
+    }
+
+    public static String[] showInputAlertMore(String message, String... names) {
+        return showInputAlertMore(message, names, new String[names.length]);
+    }
+
+    public static String[] showInputAlertMore(String message, String[] names, String[] defaultValue) {
+        GridPane page1Grid = new GridPane();
+        page1Grid.setVgap(10);
+        page1Grid.setHgap(10);
+
+        TextField[] textFields = new TextField[names.length];
+        for (int i = 0; i < names.length; i++) {
+            TextField textField = new TextField();
+            textField.setText(defaultValue[i]);
+            textField.setMinWidth(100);
+            textField.prefColumnCountProperty().bind(textField.textProperty().length());
+            GridPane.setHgrow(textField, Priority.ALWAYS);
+            page1Grid.add(new Label(names[i]), 0, i);
+            page1Grid.add(textField, 1, i);
+            textFields[i] = textField;
+        }
+
+        Alert alert = new Alert(Alert.AlertType.NONE, null, new ButtonType("取消", ButtonBar.ButtonData.NO),
+            new ButtonType("确定", ButtonBar.ButtonData.YES));
+        alert.setTitle(message);
+        alert.setGraphic(page1Grid);
+        alert.setWidth(200);
+        Optional<ButtonType> _buttonType = alert.showAndWait();
+        // 根据点击结果返回
+        if (_buttonType.get().getButtonData().equals(ButtonBar.ButtonData.YES)) {
+            String[] stringS = new String[names.length];
+            for (int i = 0; i < textFields.length; i++) {
+                stringS[i] = textFields[i].getText();
+            }
+            return stringS;
+        }
+        return null;
     }
 }
