@@ -3,12 +3,15 @@ package com.xwintop.xcore.util.javafx;
 import com.xwintop.xcore.util.FileUtil;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.imaging.ImageFormats;
 import org.apache.commons.imaging.Imaging;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -91,5 +94,18 @@ public class ImageUtil {
             e.printStackTrace();
             ImageIO.write(bufferedImage, FileUtil.getFileSuffixName(file),file);
         }
+    }
+
+    //获取文件图标
+    public static ImageView getFileIconImage(File file) {
+        Icon icon = FileSystemView.getFileSystemView().getSystemIcon(file);
+        BufferedImage bufferedImage = new BufferedImage(
+            icon.getIconWidth(),
+            icon.getIconHeight(),
+            BufferedImage.TYPE_INT_ARGB
+        );
+        icon.paintIcon(null, bufferedImage.getGraphics(), 0, 0);
+        Image fxImage = SwingFXUtils.toFXImage(bufferedImage, null);
+        return new ImageView(fxImage);
     }
 }
