@@ -29,6 +29,7 @@ public class ImageUtil {
 
     /**
      * 获取图片BufferedImage
+     *
      * @param path 图片路径
      */
     public static BufferedImage getBufferedImage(String path) {
@@ -51,6 +52,7 @@ public class ImageUtil {
 
     /**
      * 获取javafx图片
+     *
      * @param path 图片路径
      */
     public static Image getFXImage(String path) {
@@ -80,20 +82,26 @@ public class ImageUtil {
 
     /**
      * 保存图片
+     *
      * @param image
      * @param file
      */
-    public static void writeImage(Image image, File file) throws Exception{
-        writeImage(SwingFXUtils.fromFXImage(image, null),file);
+    public static void writeImage(Image image, File file) throws Exception {
+        writeImage(SwingFXUtils.fromFXImage(image, null), file);
     }
 
-    public static void writeImage(BufferedImage bufferedImage, File file) throws Exception{
+    public static void writeImage(BufferedImage bufferedImage, File file) throws Exception {
         try {
-            Imaging.writeImage(bufferedImage,file, ImageFormats.valueOf(FileUtil.getFileSuffixName(file).toUpperCase()),null);
+            Imaging.writeImage(bufferedImage, file, ImageFormats.valueOf(FileUtil.getFileSuffixName(file).toUpperCase()), null);
         } catch (Exception e) {
             e.printStackTrace();
-            ImageIO.write(bufferedImage, FileUtil.getFileSuffixName(file),file);
+            ImageIO.write(bufferedImage, FileUtil.getFileSuffixName(file), file);
         }
+    }
+
+    //获取文件夹图标
+    public static ImageView getDirectoryIconImage() {
+        return getFileIconImage(FileSystemView.getFileSystemView().getHomeDirectory());
     }
 
     //获取文件图标
