@@ -3,6 +3,7 @@ package com.xwintop.xcore.util.javafx;
 import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.lang.Singleton;
 import com.jfoenix.controls.JFXDecorator;
+import com.jpro.webapi.WebAPI;
 import com.xwintop.xcore.javafx.FxApp;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -210,8 +211,13 @@ public class JavaFxViewUtil {
     public static void openNewWindow(String title, String iconUrl, Parent root, double width, double height,
                                      boolean fullScreen, boolean max, boolean min) {
         Stage newStage = getNewStageNull(title, iconUrl, root, width, height, fullScreen, max, min);
-        newStage.initModality(Modality.APPLICATION_MODAL);
-        newStage.show();
+        if (WebAPI.isBrowser()) {
+            WebAPI webAPI = WebAPI.getWebAPI(JavaFxSystemUtil.mainStage);
+            webAPI.openStageAsTab(newStage);
+        } else {
+            newStage.initModality(Modality.APPLICATION_MODAL);
+            newStage.show();
+        }
     }
 
     //获取一个新窗口
