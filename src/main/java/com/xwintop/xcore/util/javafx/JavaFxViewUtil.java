@@ -333,29 +333,25 @@ public class JavaFxViewUtil {
      */
     public static void addTableViewOnMouseRightClickMenu(TableView<Map<String, String>> tableView) {
         tableView.setEditable(true);
-        tableView.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY) {
-                MenuItem menuAdd = new MenuItem("添加行");
-                menuAdd.setOnAction(event1 -> {
-                    tableView.getItems().add(new HashMap<String, String>());
-                });
-                MenuItem menu_Copy = new MenuItem("复制选中行");
-                menu_Copy.setOnAction(event1 -> {
-                    Map<String, String> map = tableView.getSelectionModel().getSelectedItem();
-                    Map<String, String> map2 = new HashMap<String, String>(map);
-                    tableView.getItems().add(tableView.getSelectionModel().getSelectedIndex(), map2);
-                });
-                MenuItem menu_Remove = new MenuItem("删除选中行");
-                menu_Remove.setOnAction(event1 -> {
-                    tableView.getItems().remove(tableView.getSelectionModel().getSelectedIndex());
-                });
-                MenuItem menu_RemoveAll = new MenuItem("删除所有");
-                menu_RemoveAll.setOnAction(event1 -> {
-                    tableView.getItems().clear();
-                });
-                tableView.setContextMenu(new ContextMenu(menuAdd, menu_Copy, menu_Remove, menu_RemoveAll));
-            }
+        MenuItem menuAdd = new MenuItem("添加行");
+        menuAdd.setOnAction(event1 -> {
+            tableView.getItems().add(new HashMap<String, String>());
         });
+        MenuItem menu_Copy = new MenuItem("复制选中行");
+        menu_Copy.setOnAction(event1 -> {
+            Map<String, String> map = tableView.getSelectionModel().getSelectedItem();
+            Map<String, String> map2 = new HashMap<String, String>(map);
+            tableView.getItems().add(tableView.getSelectionModel().getSelectedIndex(), map2);
+        });
+        MenuItem menu_Remove = new MenuItem("删除选中行");
+        menu_Remove.setOnAction(event1 -> {
+            tableView.getItems().remove(tableView.getSelectionModel().getSelectedIndex());
+        });
+        MenuItem menu_RemoveAll = new MenuItem("删除所有");
+        menu_RemoveAll.setOnAction(event1 -> {
+            tableView.getItems().clear();
+        });
+        tableView.setContextMenu(new ContextMenu(menuAdd, menu_Copy, menu_Remove, menu_RemoveAll));
     }
 
     /**
@@ -365,28 +361,24 @@ public class JavaFxViewUtil {
     public static void addListViewOnMouseRightClickMenu(ListView<String> listView) {
         listView.setEditable(true);
         listView.setCellFactory(TextFieldListCell.forListView());
-        listView.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY) {
-                MenuItem menuAdd = new MenuItem("添加行");
-                menuAdd.setOnAction(event1 -> {
-                    listView.getItems().add("");
-                });
-                MenuItem menu_Copy = new MenuItem("复制选中行");
-                menu_Copy.setOnAction(event1 -> {
-                    listView.getItems().add(listView.getSelectionModel().getSelectedIndex(),
-                        listView.getSelectionModel().getSelectedItem());
-                });
-                MenuItem menu_Remove = new MenuItem("删除选中行");
-                menu_Remove.setOnAction(event1 -> {
-                    listView.getItems().remove(listView.getSelectionModel().getSelectedIndex());
-                });
-                MenuItem menu_RemoveAll = new MenuItem("删除所有");
-                menu_RemoveAll.setOnAction(event1 -> {
-                    listView.getItems().clear();
-                });
-                listView.setContextMenu(new ContextMenu(menuAdd, menu_Copy, menu_Remove, menu_RemoveAll));
-            }
+        MenuItem menuAdd = new MenuItem("添加行");
+        menuAdd.setOnAction(event1 -> {
+            listView.getItems().add("");
         });
+        MenuItem menu_Copy = new MenuItem("复制选中行");
+        menu_Copy.setOnAction(event1 -> {
+            listView.getItems().add(listView.getSelectionModel().getSelectedIndex(),
+                listView.getSelectionModel().getSelectedItem());
+        });
+        MenuItem menu_Remove = new MenuItem("删除选中行");
+        menu_Remove.setOnAction(event1 -> {
+            listView.getItems().remove(listView.getSelectionModel().getSelectedIndex());
+        });
+        MenuItem menu_RemoveAll = new MenuItem("删除所有");
+        menu_RemoveAll.setOnAction(event1 -> {
+            listView.getItems().clear();
+        });
+        listView.setContextMenu(new ContextMenu(menuAdd, menu_Copy, menu_Remove, menu_RemoveAll));
     }
 
     /**
