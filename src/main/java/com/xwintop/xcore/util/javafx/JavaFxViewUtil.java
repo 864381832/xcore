@@ -382,6 +382,28 @@ public class JavaFxViewUtil {
     }
 
     /**
+     * @Title: setTableColumnIndex
+     * @Description: 设置表格属性为序号
+     */
+    public static void setTableColumnIndex(TableColumn tableColumn) {
+        tableColumn.setCellFactory((col) -> {
+            TableCell cell = new TableCell() {
+                @Override
+                public void updateItem(Object item, boolean empty) {
+                    super.updateItem(item, empty);
+                    this.setText(null);
+                    this.setGraphic(null);
+                    if (!empty) {
+                        int rowIndex = this.getIndex() + 1;
+                        this.setText(String.valueOf(rowIndex));
+                    }
+                }
+            };
+            return cell;
+        });
+    }
+
+    /**
      * @Title: setSpinnerValueFactory
      * @Description: 初始化表格属性
      */
