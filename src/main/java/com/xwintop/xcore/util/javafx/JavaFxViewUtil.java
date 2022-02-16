@@ -5,6 +5,8 @@ import cn.hutool.core.lang.Singleton;
 import com.jfoenix.controls.JFXDecorator;
 import com.jpro.webapi.WebAPI;
 import com.xwintop.xcore.javafx.FxApp;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -22,7 +24,6 @@ import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -59,6 +60,7 @@ public class JavaFxViewUtil {
      * @param fullScreenButton 是否显示全屏按钮
      * @param maximizeButton   是否显示最大化按钮
      * @param minimizeButton   是否显示最小化按钮
+     *
      * @return 新建的窗体对象
      */
     public static Stage jfxStage(
@@ -386,6 +388,7 @@ public class JavaFxViewUtil {
      * @Description: 设置表格属性为序号
      */
     public static void setTableColumnIndex(TableColumn tableColumn) {
+        tableColumn.setCellValueFactory((Callback<TableColumn.CellDataFeatures, ObservableValue>) param -> new SimpleObjectProperty<>(String.valueOf(param.getTableView().getItems().indexOf(param.getValue()) + 1)));
         tableColumn.setCellFactory((col) -> {
             TableCell cell = new TableCell() {
                 @Override
