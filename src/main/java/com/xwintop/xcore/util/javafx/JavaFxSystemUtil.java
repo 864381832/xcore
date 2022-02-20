@@ -6,7 +6,6 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 
-import com.jpro.webapi.WebAPI;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -42,9 +41,9 @@ public class JavaFxSystemUtil {
      * @return 屏幕尺寸
      */
     public static double[] getScreenSizeByScale(double width, double height) {
-        if (WebAPI.isBrowser()) {
-            return new double[]{1280, 900};
-        }
+//        if (WebAPI.isBrowser()) {
+//            return new double[]{1280, 900};
+//        }
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double screenWidth = screenSize.width * width;
         double screenHeight = screenSize.height * height;
