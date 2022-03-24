@@ -23,10 +23,10 @@
             <id>aliyunmaven</id>
             <url>https://maven.aliyun.com/repository/public</url>
         </repository>
-        <repository>
-            <id>jpro - sandec repository</id>
-            <url>https://sandec.jfrog.io/artifactory/repo</url>
-        </repository>
+<!--        <repository>-->
+<!--            <id>jpro - sandec repository</id>-->
+<!--            <url>https://sandec.jfrog.io/artifactory/repo</url>-->
+<!--        </repository>-->
     </repositories>
 
     <dependencies>
@@ -69,14 +69,14 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
         <!-- logback日志记录 -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.3</version>
+            <version>1.2.11</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->
@@ -111,11 +111,11 @@
             <version>9.0.10</version>
         </dependency>
 
-        <dependency>
-            <groupId>io.github.palexdev</groupId>
-            <artifactId>materialfx</artifactId>
-            <version>11.13.2</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.github.palexdev</groupId>-->
+<!--            <artifactId>materialfx</artifactId>-->
+<!--            <version>11.13.2</version>-->
+<!--        </dependency>-->
 
         <!-- 将javafx打包成web运行包-->
 <!--        <dependency>-->
