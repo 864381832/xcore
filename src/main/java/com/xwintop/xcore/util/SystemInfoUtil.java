@@ -22,7 +22,7 @@ public class SystemInfoUtil {
         } else {
             fileName = "C://WINDOWS//system32//drivers//etc//hosts";
         }
-        log.info("获取hosts文件路径:"+fileName);
+//        log.info("获取hosts文件路径:"+fileName);
         return fileName;
     }
 

@@ -50,7 +50,9 @@ public class FxAlerts {
         error(owner, title, message, ExceptionUtils.getStackTrace(throwable));
     }
 
-    public static void alert(Alert.AlertType alertType, String title, String message) {}
+    public static void alert(Alert.AlertType alertType, String title, String message) {
+        alert(null, alertType, title, message);
+    }
 
     public static void alert(Window owner, Alert.AlertType alertType, String title, String message) {
         FxApp.runLater(() -> {

@@ -36,6 +36,7 @@ import javafx.util.StringConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
+import org.slf4j.Logger;
 
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -46,9 +47,9 @@ import java.util.function.Consumer;
 
 import static com.xwintop.xcore.javafx.helper.LayoutHelper.iconView;
 
-@Slf4j
+//@Slf4j
 public class JavaFxViewUtil {
-
+    private static Logger log = org.slf4j.LoggerFactory.getLogger(JavaFxViewUtil.class);
     /**
      * 创建对话框窗体
      *

@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
+import org.slf4j.Logger;
 
 /**
  * @ClassName: ScheduleManager
@@ -23,8 +24,9 @@ import org.quartz.impl.StdSchedulerFactory;
 
 @Getter
 @Setter
-@Slf4j
+//@Slf4j
 public class ActionScheduleUtil {
+    private static Logger log = org.slf4j.LoggerFactory.getLogger(ActionScheduleUtil.class);
     private static final String[] quartzChoiceBoxStrings = new String[]{"简单表达式", "Cron表达式"};
     private SchedulerFactory sf = new StdSchedulerFactory();
     private String schedulerKeyGroup = "x";
