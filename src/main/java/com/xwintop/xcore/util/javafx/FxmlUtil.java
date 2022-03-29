@@ -2,6 +2,7 @@ package com.xwintop.xcore.util.javafx;
 
 import com.xwintop.xcore.XCoreException;
 import javafx.fxml.FXMLLoader;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.ResourceBundle;
@@ -34,7 +35,7 @@ public class FxmlUtil {
         ClassLoader classLoader, String resourcePath, ResourceBundle resourceBundle) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(classLoader.getResource(resourcePath));
+            fxmlLoader.setLocation(classLoader.getResource(StringUtils.removeStart(resourcePath, "/")));
             fxmlLoader.setResources(resourceBundle);
             fxmlLoader.load();
             return fxmlLoader;

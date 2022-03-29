@@ -75,6 +75,12 @@ public class FxDialog<T> {
         return this;
     }
 
+    public FxDialog<T> setPrefSize(double prefWidth, double prefHeight) {
+        this.prefWidth = prefWidth;
+        this.prefHeight = prefHeight;
+        return this;
+    }
+
     public FxDialog<T> setPrefHeight(double prefHeight) {
         this.prefHeight = prefHeight;
         return this;
@@ -100,6 +106,15 @@ public class FxDialog<T> {
         return this;
     }
 
+    public FxDialog<T> setBodyFxml(ClassLoader classLoader, String bodyFxmlPath) {
+        this.bodyFxmlClassLoader = classLoader;
+        this.bodyFxmlPath = bodyFxmlPath;
+        return this;
+    }
+
+    /**
+     * @deprecated Use {@link #setBodyFxml(ClassLoader, String)} )} instead
+     */
     public FxDialog<T> setBodyFxml(String bodyFxmlPath) {
         this.bodyFxmlPath = bodyFxmlPath;
         return this;
