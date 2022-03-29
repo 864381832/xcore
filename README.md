@@ -15,16 +15,16 @@
 ```
 <repositories>
     <repository>
-        <id>xwintop-maven</id>
-        <url>https://xwintop.gitee.io/maven/repository</url>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
     </repository>
 </repositories>
 
 <dependencies>
     <dependency>
-        <groupId>com.xwintop</groupId>
+        <groupId>com.gitee.xwintop</groupId>
         <artifactId>xcore</artifactId>
-        <version>0.0.6</version>
+        <version>0.0.7</version>
         <scope>provided</scope>
     </dependency>
 </dependencies>
@@ -46,4 +46,7 @@ git 托管 maven可参考教程(若无法下载请拉取项目自行编译)。[�
   1. 添加进度条对话框
 - 0.0.6 2020-07-04
   1. 添加历史输入框功能封装
+  2. 优化部分功能代码
+- 0.0.7 2022-03-29
+  1. 升级jdk版本为17
   2. 优化部分功能代码
