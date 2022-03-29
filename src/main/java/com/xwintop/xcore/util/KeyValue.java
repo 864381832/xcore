@@ -2,6 +2,9 @@ package com.xwintop.xcore.util;
 
 import java.util.Objects;
 
+/**
+ * 键值对，默认是可修改的，可以通过 {@link #unmodifiable()} 方法获取不可修改的键值对。
+ */
 public class KeyValue<K, V> {
 
     private K key;
@@ -26,6 +29,31 @@ public class KeyValue<K, V> {
 
     public V getValue() {
         return value;
+    }
+
+    public void setKey(K key) {
+        this.key = key;
+    }
+
+    public void setValue(V value) {
+        this.value = value;
+    }
+
+    /**
+     * 创建一个只读实例
+     */
+    public KeyValue<K, V> unmodifiable() {
+        return new KeyValue<>(this) {
+            @Override
+            public void setKey(K key) {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public void setValue(V value) {
+                throw new UnsupportedOperationException();
+            }
+        };
     }
 
     @Override
