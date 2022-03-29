@@ -10,6 +10,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
+import java.util.List;
 
 /**
  * 文件选择工具
@@ -19,6 +20,22 @@ import java.io.File;
 public class FileChooserUtil {
 
     public static final File HOME_DIRECTORY = FileSystemView.getFileSystemView().getHomeDirectory();
+
+    //选择多个文件
+    public static List<File> chooseFiles() {
+        return chooseFiles(null);
+    }
+
+    public static List<File> chooseFiles(ExtensionFilter... extensionFilter) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("请选择文件");
+        fileChooser.setInitialDirectory(HOME_DIRECTORY);
+
+        if (extensionFilter != null) {
+            fileChooser.getExtensionFilters().addAll(extensionFilter);
+        }
+        return fileChooser.showOpenMultipleDialog(null);
+    }
 
     public static File chooseFile() {
         return chooseFile(null);

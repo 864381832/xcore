@@ -1,34 +1,22 @@
 package com.xwintop.xcore.javafx.dialog;
 
 import com.xwintop.xcore.javafx.FxApp;
-import java.util.Optional;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+
+import java.util.Optional;
 
 /**
  * 系统对话框封装
  */
 public class FxAlerts {
-
-    public static void error(String message) {
-        alert(Alert.AlertType.ERROR, "错误", message);
-    }
-
-    public static void error(String title, String message) {
-        alert(Alert.AlertType.ERROR, title, message);
-    }
-
-    public static void error(String title, Throwable throwable) {
-        boolean noMessage = StringUtils.isBlank(throwable.getMessage());
-        String message = noMessage ? throwable.toString() : throwable.getMessage();
-        error(title, message, ExceptionUtils.getStackTrace(throwable));
-    }
 
     public static void info(String title, String message) {
         alert(Alert.AlertType.INFORMATION, title, message);
@@ -38,7 +26,35 @@ public class FxAlerts {
         alert(Alert.AlertType.WARNING, title, message);
     }
 
+    public static void error(String message) {
+        alert(Alert.AlertType.ERROR, "错误", message);
+    }
+
+    public static void error(String title, String message) {
+        alert(Alert.AlertType.ERROR, title, message);
+    }
+
+    public static void error(Window owner, String title, String message) {
+        alert(owner, Alert.AlertType.ERROR, title, message);
+    }
+
+    public static void error(String title, Throwable throwable) {
+        boolean noMessage = StringUtils.isBlank(throwable.getMessage());
+        String message = noMessage ? throwable.toString() : throwable.getMessage();
+        error(title, message, ExceptionUtils.getStackTrace(throwable));
+    }
+
+    public static void error(Window owner, String title, Throwable throwable) {
+        boolean noMessage = StringUtils.isBlank(throwable.getMessage());
+        String message = noMessage ? throwable.toString() : throwable.getMessage();
+        error(owner, title, message, ExceptionUtils.getStackTrace(throwable));
+    }
+
     public static void alert(Alert.AlertType alertType, String title, String message) {
+        alert(null, alertType, title, message);
+    }
+
+    public static void alert(Window owner, Alert.AlertType alertType, String title, String message) {
         FxApp.runLater(() -> {
             try {
                 Alert alert = new Alert(alertType, message, ButtonType.OK);
@@ -47,7 +63,12 @@ public class FxAlerts {
 
                 Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
                 FxApp.setupIcon(stage);
-                FxApp.setupModality(alert);
+
+                if (owner != null) {
+                    stage.initOwner(owner);
+                } else {
+                    FxApp.setupModality(alert);
+                }
 
                 alert.showAndWait();
             } catch (Exception e) {
@@ -58,10 +79,15 @@ public class FxAlerts {
 
     // 打开一个展示了详细错误信息的错误对话框
     public static void error(String title, String message, String details) {
-        FxApp.runLater(() -> error0(title, message, details));
+        FxApp.runLater(() -> error0(null, title, message, details));
     }
 
-    private static void error0(String title, String message, String details) {
+    // 打开一个展示了详细错误信息的错误对话框
+    public static void error(Window owner, String title, String message, String details) {
+        FxApp.runLater(() -> error0(owner, title, message, details));
+    }
+
+    private static void error0(Window owner, String title, String message, String details) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -84,7 +110,12 @@ public class FxAlerts {
 
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         FxApp.setupIcon(stage);
-        FxApp.setupModality(alert);
+
+        if (owner != null) {
+            stage.initOwner(owner);
+        } else {
+            FxApp.setupModality(alert);
+        }
 
         alert.showAndWait();
     }

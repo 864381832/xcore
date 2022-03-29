@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -28,8 +29,9 @@ import java.util.function.Function;
 
 @Getter
 @Setter
-@Slf4j
+//@Slf4j
 public class TextFieldInputHistoryDialog {
+    private static Logger log = org.slf4j.LoggerFactory.getLogger(TextFieldInputHistoryDialog.class);
     private ObservableList<Map<String, String>> tableData = FXCollections.observableArrayList();
     private String saveFilePath = null;
     private String[] tableColumns = null;
@@ -86,7 +88,7 @@ public class TextFieldInputHistoryDialog {
             try {
                 File CONFIG_FILE = new File(saveFilePath);
                 Yaml yaml = new Yaml();
-                FileUtils.writeStringToFile(CONFIG_FILE, yaml.dump(this.getTableData()), "UTF-8");
+                FileUtils.writeStringToFile(CONFIG_FILE, yaml.dump(this.tableData), "UTF-8");
                 TooltipUtil.showToast("保存配置成功,保存在：" + CONFIG_FILE.getPath());
             } catch (Exception e) {
                 log.error("保存配置失败", e);

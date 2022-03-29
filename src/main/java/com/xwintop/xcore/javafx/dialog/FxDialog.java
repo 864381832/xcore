@@ -3,13 +3,6 @@ package com.xwintop.xcore.javafx.dialog;
 import com.xwintop.xcore.XCoreException;
 import com.xwintop.xcore.javafx.FxApp;
 import com.xwintop.xcore.util.javafx.FxmlUtil;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -28,6 +21,14 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 自定义对话框
@@ -48,6 +49,8 @@ public class FxDialog<T> {
 
     private Window owner;
 
+    private ClassLoader bodyFxmlClassLoader;
+
     private String bodyFxmlPath;
 
     private Parent body;
@@ -62,8 +65,19 @@ public class FxDialog<T> {
 
     private ResourceBundle resourceBundle;
 
+    public FxDialog<T> setBodyFxmlClassLoader(ClassLoader bodyFxmlClassLoader) {
+        this.bodyFxmlClassLoader = bodyFxmlClassLoader;
+        return this;
+    }
+
     public FxDialog<T> setResizable(boolean resizable) {
         this.resizable = resizable;
+        return this;
+    }
+
+    public FxDialog<T> setPrefSize(double prefWidth, double prefHeight) {
+        this.prefWidth = prefWidth;
+        this.prefHeight = prefHeight;
         return this;
     }
 
@@ -92,6 +106,15 @@ public class FxDialog<T> {
         return this;
     }
 
+    public FxDialog<T> setBodyFxml(ClassLoader classLoader, String bodyFxmlPath) {
+        this.bodyFxmlClassLoader = classLoader;
+        this.bodyFxmlPath = bodyFxmlPath;
+        return this;
+    }
+
+    /**
+     * @deprecated Use {@link #setBodyFxml(ClassLoader, String)} )} instead
+     */
     public FxDialog<T> setBodyFxml(String bodyFxmlPath) {
         this.bodyFxmlPath = bodyFxmlPath;
         return this;
@@ -130,9 +153,12 @@ public class FxDialog<T> {
     public T show() {
 
         if (this.bodyFxmlPath != null) {
+            ClassLoader classLoader =
+                this.bodyFxmlClassLoader == null ? FxDialog.class.getClassLoader() : this.bodyFxmlClassLoader;
+
             FXMLLoader fxmlLoader = resourceBundle == null?
-                FxmlUtil.loadFxmlFromResource(this.bodyFxmlPath):
-                FxmlUtil.loadFxmlFromResource(this.bodyFxmlPath, resourceBundle);
+                FxmlUtil.loadFxmlFromResource(classLoader, this.bodyFxmlPath):
+                FxmlUtil.loadFxmlFromResource(classLoader, this.bodyFxmlPath, resourceBundle);
 
             Stage stage = createStage(fxmlLoader.getRoot());
             stage.show();
@@ -151,9 +177,12 @@ public class FxDialog<T> {
     public T showAndWait() {
 
         if (this.bodyFxmlPath != null) {
+            ClassLoader classLoader =
+                this.bodyFxmlClassLoader == null ? FxDialog.class.getClassLoader() : this.bodyFxmlClassLoader;
+
             FXMLLoader fxmlLoader = resourceBundle == null?
-                FxmlUtil.loadFxmlFromResource(this.bodyFxmlPath):
-                FxmlUtil.loadFxmlFromResource(this.bodyFxmlPath, resourceBundle);
+                FxmlUtil.loadFxmlFromResource(classLoader, this.bodyFxmlPath):
+                FxmlUtil.loadFxmlFromResource(classLoader, this.bodyFxmlPath, resourceBundle);
 
             Stage stage = createStage(fxmlLoader.getRoot());
             stage.showAndWait();

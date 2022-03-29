@@ -4,6 +4,8 @@ import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.lang.Singleton;
 import com.jfoenix.controls.JFXDecorator;
 import com.xwintop.xcore.javafx.FxApp;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -21,7 +23,6 @@ import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -35,6 +36,7 @@ import javafx.util.StringConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
+import org.slf4j.Logger;
 
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -45,9 +47,9 @@ import java.util.function.Consumer;
 
 import static com.xwintop.xcore.javafx.helper.LayoutHelper.iconView;
 
-@Slf4j
+//@Slf4j
 public class JavaFxViewUtil {
-
+    private static Logger log = org.slf4j.LoggerFactory.getLogger(JavaFxViewUtil.class);
     /**
      * 创建对话框窗体
      *
@@ -58,6 +60,7 @@ public class JavaFxViewUtil {
      * @param fullScreenButton 是否显示全屏按钮
      * @param maximizeButton   是否显示最大化按钮
      * @param minimizeButton   是否显示最小化按钮
+     *
      * @return 新建的窗体对象
      */
     public static Stage jfxStage(
@@ -210,8 +213,13 @@ public class JavaFxViewUtil {
     public static void openNewWindow(String title, String iconUrl, Parent root, double width, double height,
                                      boolean fullScreen, boolean max, boolean min) {
         Stage newStage = getNewStageNull(title, iconUrl, root, width, height, fullScreen, max, min);
-        newStage.initModality(Modality.APPLICATION_MODAL);
-        newStage.show();
+//        if (WebAPI.isBrowser()) {
+//            WebAPI webAPI = WebAPI.getWebAPI(JavaFxSystemUtil.mainStage);
+//            webAPI.openStageAsTab(newStage);
+//        } else {
+            newStage.initModality(Modality.APPLICATION_MODAL);
+            newStage.show();
+//        }
     }
 
     //获取一个新窗口
@@ -327,29 +335,25 @@ public class JavaFxViewUtil {
      */
     public static void addTableViewOnMouseRightClickMenu(TableView<Map<String, String>> tableView) {
         tableView.setEditable(true);
-        tableView.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY) {
-                MenuItem menuAdd = new MenuItem("添加行");
-                menuAdd.setOnAction(event1 -> {
-                    tableView.getItems().add(new HashMap<String, String>());
-                });
-                MenuItem menu_Copy = new MenuItem("复制选中行");
-                menu_Copy.setOnAction(event1 -> {
-                    Map<String, String> map = tableView.getSelectionModel().getSelectedItem();
-                    Map<String, String> map2 = new HashMap<String, String>(map);
-                    tableView.getItems().add(tableView.getSelectionModel().getSelectedIndex(), map2);
-                });
-                MenuItem menu_Remove = new MenuItem("删除选中行");
-                menu_Remove.setOnAction(event1 -> {
-                    tableView.getItems().remove(tableView.getSelectionModel().getSelectedIndex());
-                });
-                MenuItem menu_RemoveAll = new MenuItem("删除所有");
-                menu_RemoveAll.setOnAction(event1 -> {
-                    tableView.getItems().clear();
-                });
-                tableView.setContextMenu(new ContextMenu(menuAdd, menu_Copy, menu_Remove, menu_RemoveAll));
-            }
+        MenuItem menuAdd = new MenuItem("添加行");
+        menuAdd.setOnAction(event1 -> {
+            tableView.getItems().add(new HashMap<String, String>());
         });
+        MenuItem menu_Copy = new MenuItem("复制选中行");
+        menu_Copy.setOnAction(event1 -> {
+            Map<String, String> map = tableView.getSelectionModel().getSelectedItem();
+            Map<String, String> map2 = new HashMap<String, String>(map);
+            tableView.getItems().add(tableView.getSelectionModel().getSelectedIndex(), map2);
+        });
+        MenuItem menu_Remove = new MenuItem("删除选中行");
+        menu_Remove.setOnAction(event1 -> {
+            tableView.getItems().remove(tableView.getSelectionModel().getSelectedIndex());
+        });
+        MenuItem menu_RemoveAll = new MenuItem("删除所有");
+        menu_RemoveAll.setOnAction(event1 -> {
+            tableView.getItems().clear();
+        });
+        tableView.setContextMenu(new ContextMenu(menuAdd, menu_Copy, menu_Remove, menu_RemoveAll));
     }
 
     /**
@@ -359,27 +363,46 @@ public class JavaFxViewUtil {
     public static void addListViewOnMouseRightClickMenu(ListView<String> listView) {
         listView.setEditable(true);
         listView.setCellFactory(TextFieldListCell.forListView());
-        listView.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY) {
-                MenuItem menuAdd = new MenuItem("添加行");
-                menuAdd.setOnAction(event1 -> {
-                    listView.getItems().add("");
-                });
-                MenuItem menu_Copy = new MenuItem("复制选中行");
-                menu_Copy.setOnAction(event1 -> {
-                    listView.getItems().add(listView.getSelectionModel().getSelectedIndex(),
-                        listView.getSelectionModel().getSelectedItem());
-                });
-                MenuItem menu_Remove = new MenuItem("删除选中行");
-                menu_Remove.setOnAction(event1 -> {
-                    listView.getItems().remove(listView.getSelectionModel().getSelectedIndex());
-                });
-                MenuItem menu_RemoveAll = new MenuItem("删除所有");
-                menu_RemoveAll.setOnAction(event1 -> {
-                    listView.getItems().clear();
-                });
-                listView.setContextMenu(new ContextMenu(menuAdd, menu_Copy, menu_Remove, menu_RemoveAll));
-            }
+        MenuItem menuAdd = new MenuItem("添加行");
+        menuAdd.setOnAction(event1 -> {
+            listView.getItems().add("");
+        });
+        MenuItem menu_Copy = new MenuItem("复制选中行");
+        menu_Copy.setOnAction(event1 -> {
+            listView.getItems().add(listView.getSelectionModel().getSelectedIndex(),
+                listView.getSelectionModel().getSelectedItem());
+        });
+        MenuItem menu_Remove = new MenuItem("删除选中行");
+        menu_Remove.setOnAction(event1 -> {
+            listView.getItems().remove(listView.getSelectionModel().getSelectedIndex());
+        });
+        MenuItem menu_RemoveAll = new MenuItem("删除所有");
+        menu_RemoveAll.setOnAction(event1 -> {
+            listView.getItems().clear();
+        });
+        listView.setContextMenu(new ContextMenu(menuAdd, menu_Copy, menu_Remove, menu_RemoveAll));
+    }
+
+    /**
+     * @Title: setTableColumnIndex
+     * @Description: 设置表格属性为序号
+     */
+    public static void setTableColumnIndex(TableColumn tableColumn) {
+        tableColumn.setCellValueFactory((Callback<TableColumn.CellDataFeatures, ObservableValue>) param -> new SimpleObjectProperty<>(String.valueOf(param.getTableView().getItems().indexOf(param.getValue()) + 1)));
+        tableColumn.setCellFactory((col) -> {
+            TableCell cell = new TableCell() {
+                @Override
+                public void updateItem(Object item, boolean empty) {
+                    super.updateItem(item, empty);
+                    this.setText(null);
+                    this.setGraphic(null);
+                    if (!empty) {
+                        int rowIndex = this.getIndex() + 1;
+                        this.setText(String.valueOf(rowIndex));
+                    }
+                }
+            };
+            return cell;
         });
     }
 
